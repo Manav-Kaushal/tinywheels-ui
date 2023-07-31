@@ -1,7 +1,11 @@
-export default function Home() {
+import Typography from "@components/Typography";
+
+const Home = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Main
-    </main>
+    <div>
+      <Typography variant="heading">Main</Typography>
+    </div>
   );
-}
+};
+
+export default Home;
