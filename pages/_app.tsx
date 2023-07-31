@@ -1,7 +1,9 @@
 import BaseLayout from "@components/Layouts/BaseLayout";
 import { defaultSEO } from "@utils/config";
 import { NextPage } from "next";
+import { SessionProvider } from "next-auth/react";
 import { NextSeo } from "next-seo";
+import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { ReactElement, ReactNode } from "react";
@@ -16,7 +18,10 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function App({ Component, pageProps }: AppPropsWithLayout) {
+function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) {
   const Layout = (Component as any).Layout || BaseLayout;
 
   return (
@@ -26,9 +31,13 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <Toaster />
       <NextSeo {...defaultSEO} />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <SessionProvider session={session}>
+        <ThemeProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ThemeProvider>
+      </SessionProvider>
     </>
   );
 }
