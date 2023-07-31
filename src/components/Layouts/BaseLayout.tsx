@@ -1,3 +1,4 @@
+import Footer from "@components/Footer";
 import React from "react";
 import Header from "../Header";
 
@@ -10,6 +11,7 @@ const BaseLayout = ({ children }: Props) => {
     <>
       <Header />
       <main>{children}</main>
+      <Footer />
     </>
   );
 };
