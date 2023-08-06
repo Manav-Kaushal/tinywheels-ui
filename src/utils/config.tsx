@@ -2,7 +2,7 @@ const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
 
 const appConfig = {
   name: "Tiny Wheels",
-  logo: "/assets/images/logo-dark.png",
+  logo: "/assets/icons/logo-dark.png",
   apiBaseUrl: isProduction
     ? "https://smiling-clam-jersey.cyclic.cloud"
     : "http://localhost:8000",
