@@ -21,7 +21,7 @@ type AppPropsWithLayout = AppProps & {
 function App({
   Component,
   pageProps: { session, ...pageProps },
-}: AppPropsWithLayout) {
+  }: AppPropsWithLayout) {
   const Layout = (Component as any).Layout || BaseLayout;
 
   return (

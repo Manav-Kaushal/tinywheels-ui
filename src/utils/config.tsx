@@ -3,7 +3,9 @@ const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
 const appConfig = {
   name: "Tiny Wheels",
   logo: "/assets/images/logo-dark.png",
-  apiBaseUrl: isProduction ? "" : "http://localhost:8000/api",
+  apiBaseUrl: isProduction
+    ? "https://smiling-clam-jersey.cyclic.cloud"
+    : "http://localhost:8000",
   websiteUrl: isProduction
     ? "https://tinywheels.vercel.app"
     : "http://localhost:3000",
@@ -27,4 +29,4 @@ const defaultSEO = {
   },
 };
 
-export { appConfig, imageKitConfig, defaultSEO };
+export { appConfig, defaultSEO, imageKitConfig };
