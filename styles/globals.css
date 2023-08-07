@@ -29,17 +29,6 @@ body {
   @apply px-6 mx-auto lg:px-8;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span {
-  @apply text-gray-800;
-}
-
 .link {
-  @apply font-semibold leading-6 cursor-pointer hover:text-secondary-600 duration-200;
+  @apply font-semibold leading-6 cursor-pointer hover:text-primary-600 duration-200;
 }

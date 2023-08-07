@@ -1,3 +1,4 @@
+import Button from "@components/Button";
 import { useId } from "react";
 
 // import { AppDemo } from "@/components/AppDemo";
@@ -85,7 +86,7 @@ function BackgroundIllustration(props: any) {
 
 export function Hero() {
   return (
-    <div className="py-20 overflow-hidden sm:py-32 lg:pb-32 xl:pb-36">
+    <div className="py-20 overflow-hidden sm:py-32 lg:pb-32 xl:pb-36 global-container">
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
         <div className="relative z-10 max-w-2xl mx-auto lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
           <h1 className="text-4xl font-medium tracking-tight text-gray-900">
@@ -107,7 +108,7 @@ export function Hero() {
                 <PlayIcon className="flex-none w-6 h-6" />
                 <span className="ml-2.5">Watch the video</span>
               </Button> */}
-            <button>test</button>
+            <Button variant="primary" label="Start Your Collection Today" />
           </div>
         </div>
         <div className="relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">
