@@ -1,12 +1,7 @@
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
-import {
-  ChevronDownIcon,
-  PhoneIcon,
-  PlayCircleIcon,
-} from "@heroicons/react/20/solid";
+import { Dialog } from "@headlessui/react";
+import { PhoneIcon, PlayCircleIcon } from "@heroicons/react/20/solid";
 import {
   ArrowPathIcon,
-  Bars3Icon,
   ChartPieIcon,
   CursorArrowRaysIcon,
   FingerPrintIcon,
@@ -14,11 +9,11 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { appConfig } from "@utils/config";
-import classNames from "classnames";
 import { signIn, signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 type HeaderProps = {
   user: any;
@@ -62,16 +57,17 @@ const callsToAction = [
 ];
 
 const Header: React.FC<HeaderProps> = ({ user }) => {
+  const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow">
+    <header className="bg-white shadow-md">
       <nav
         className="flex items-center justify-between py-4 global-container"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link href="/">
             <span className="sr-only">Your Company</span>
             <div className="relative aspect-[3.5/1] w-32">
               <Image
@@ -81,9 +77,9 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 fill
               />
             </div>
-          </a>
+          </Link>
         </div>
-        <div className="flex lg:hidden">
+        {/* <div className="flex lg:hidden">
           <button
             type="button"
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -92,8 +88,8 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="w-6 h-6" aria-hidden="true" />
           </button>
-        </div>
-        <Popover.Group className="hidden lg:flex lg:gap-x-12">
+        </div> */}
+        {/* <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
             <Popover.Button className="flex items-center text-sm font-semibold leading-6 text-gray-900 gap-x-1">
               Product
@@ -169,21 +165,15 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           >
             Company
           </Link>
-        </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        </Popover.Group> */}
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:space-x-4">
           {user && user?.token ? (
-            <p
-              className="text-sm font-semibold leading-6 text-gray-900 cursor-pointer"
-              onClick={() => signOut()}
-            >
-              Sign Out <span aria-hidden="true">&rarr;</span>
+            <p className="link" onClick={() => signOut()}>
+              Sign Out
             </p>
           ) : (
-            <p
-              className="text-sm font-semibold leading-6 text-gray-900 cursor-pointer"
-              onClick={() => signIn()}
-            >
-              Log in <span aria-hidden="true">&rarr;</span>
+            <p className="link" onClick={() => signIn()}>
+              Log in/Signup
             </p>
           )}
         </div>
@@ -219,7 +209,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           </div>
           <div className="flow-root mt-6">
             <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="py-6 space-y-2">
+              {/* <div className="py-6 space-y-2">
                 <Disclosure as="div" className="-mx-3">
                   {({ open }) => (
                     <>
@@ -266,7 +256,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 >
                   Company
                 </a>
-              </div>
+              </div> */}
               <div className="py-6">
                 <a
                   href="#"
