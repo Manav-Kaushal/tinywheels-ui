@@ -25,7 +25,7 @@ const Footer = () => {
       <div className="global-container">
         <div className="flex flex-col items-start justify-between pt-16 pb-6 gap-y-12 lg:flex-row lg:items-center lg:py-16">
           <div>
-            <div className="flex items-center text-gray-900">
+            <div className="flex items-center text-gray-800">
               {/* <Logomark className="flex-none w-10 h-10 fill-cyan-500" /> */}
               <div className="ml-4">
                 <p className="text-base font-semibold">Pocket</p>
@@ -42,7 +42,7 @@ const Footer = () => {
               {/* <Image src={qrCode} alt="" unoptimized /> */}
             </div>
             <div className="ml-8 lg:w-64">
-              <p className="text-base font-semibold text-gray-900">
+              <p className="text-base font-semibold text-gray-800">
                 <Link href="#">
                   <span className="absolute inset-0 sm:rounded-2xl" />
                   Download the app

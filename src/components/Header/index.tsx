@@ -91,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
         </div> */}
         {/* <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
-            <Popover.Button className="flex items-center text-sm font-semibold leading-6 text-gray-900 gap-x-1">
+            <Popover.Button className="flex items-center text-sm font-semibold leading-6 text-gray-800 gap-x-1">
               Product
               <ChevronDownIcon
                 className="flex-none w-5 h-5 text-gray-400"
@@ -124,7 +124,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                       <div className="flex-auto">
                         <a
                           href={item.href}
-                          className="block font-semibold text-gray-900"
+                          className="block font-semibold text-gray-800"
                         >
                           {item.name}
                           <span className="absolute inset-0" />
@@ -139,7 +139,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                     <a
                       key={item.name}
                       href={item.href}
-                      className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
+                      className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-800 hover:bg-gray-100"
                     >
                       <item.icon
                         className="flex-none w-5 h-5 text-gray-400"
@@ -153,15 +153,15 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
             </Transition>
           </Popover>
 
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-800">
             Features
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-800">
             Marketplace
           </a>
           <Link
             href="#"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="text-sm font-semibold leading-6 text-gray-800"
           >
             Company
           </Link>
@@ -213,7 +213,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 <Disclosure as="div" className="-mx-3">
                   {({ open }) => (
                     <>
-                      <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                      <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-800 hover:bg-gray-50">
                         Product
                         <ChevronDownIcon
                           className={classNames(
@@ -229,7 +229,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                             key={item.name}
                             as="a"
                             href={item.href}
-                            className="block py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
+                            className="block py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-800 rounded-lg hover:bg-gray-50"
                           >
                             {item.name}
                           </Disclosure.Button>
@@ -240,19 +240,19 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 </Disclosure>
                 <a
                   href="#"
-                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
+                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-800 rounded-lg hover:bg-gray-50"
                 >
                   Features
                 </a>
                 <a
                   href="#"
-                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
+                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-800 rounded-lg hover:bg-gray-50"
                 >
                   Marketplace
                 </a>
                 <a
                   href="#"
-                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
+                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-800 rounded-lg hover:bg-gray-50"
                 >
                   Company
                 </a>
@@ -260,7 +260,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
               <div className="py-6">
                 <a
                   href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-800 hover:bg-gray-50"
                 >
                   Log in
                 </a>
