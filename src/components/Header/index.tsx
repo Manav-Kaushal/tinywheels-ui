@@ -1,13 +1,5 @@
 import { Dialog } from "@headlessui/react";
-import { PhoneIcon, PlayCircleIcon } from "@heroicons/react/20/solid";
-import {
-  ArrowPathIcon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { appConfig } from "@utils/config";
 import { signIn, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
@@ -18,43 +10,6 @@ import { useState } from "react";
 type HeaderProps = {
   user: any;
 };
-
-const products = [
-  {
-    name: "Analytics",
-    description: "Get a better understanding of your traffic",
-    href: "#",
-    icon: ChartPieIcon,
-  },
-  {
-    name: "Engagement",
-    description: "Speak directly to your customers",
-    href: "#",
-    icon: CursorArrowRaysIcon,
-  },
-  {
-    name: "Security",
-    description: "Your customers’ data will be safe and secure",
-    href: "#",
-    icon: FingerPrintIcon,
-  },
-  {
-    name: "Integrations",
-    description: "Connect with third-party tools",
-    href: "#",
-    icon: SquaresPlusIcon,
-  },
-  {
-    name: "Automations",
-    description: "Build strategic funnels that will convert",
-    href: "#",
-    icon: ArrowPathIcon,
-  },
-];
-const callsToAction = [
-  { name: "Watch demo", href: "#", icon: PlayCircleIcon },
-  { name: "Contact sales", href: "#", icon: PhoneIcon },
-];
 
 const Header: React.FC<HeaderProps> = ({ user }) => {
   const { theme, setTheme } = useTheme();
@@ -166,11 +121,14 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
             Company
           </Link>
         </Popover.Group> */}
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:space-x-4">
-          {user && user?.token ? (
-            <p className="link" onClick={() => signOut()}>
-              Sign Out
-            </p>
+        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-4">
+          {user?.token ? (
+            <>
+              <p className="text-sm">{user.name}</p>
+              <p className="link" onClick={() => signOut()}>
+                Sign Out
+              </p>
+            </>
           ) : (
             <p className="link" onClick={() => signIn()}>
               Log in/Signup

@@ -26,15 +26,28 @@ export const authOptions = {
               headers: { "Content-Type": "application/json" },
             }
           );
-          return { ...response.data.user, token: response.data.token };
+          if (response.ok) {
+            return { ...response.data.user, token: response.data.token };
+          } else {
+            throw new Error(
+              "Invalid login credentials. Please check your email and password."
+            );
+          }
         } catch (error: any) {
-          throw new Error(
-            error?.response?.data?.message || "Something went wrong"
-          );
+          let errorMessage = "An error occurred while processing your request.";
+
+          if (error?.message) {
+            errorMessage = error?.message;
+          }
+
+          throw new Error(errorMessage);
         }
       },
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
     jwt: async ({ token, user }: any) => {
       user && (token.user = user);

@@ -1,21 +1,16 @@
 import Button from "@components/Button";
-import ModelViewer from "@components/ModelViewer";
+import logoAudi from "@public/assets/brand-logos/audi.svg";
+import logoBmw from "@public/assets/brand-logos/bmw.svg";
+import logoFord from "@public/assets/brand-logos/ford.svg";
+import logoHonda from "@public/assets/brand-logos/honda.svg";
+import logoBenz from "@public/assets/brand-logos/mercedes-benz.svg";
+import logoPorsche from "@public/assets/brand-logos/porsche.svg";
+import logoToyota from "@public/assets/brand-logos/toyota.svg";
+import logoVW from "@public/assets/brand-logos/volkswagen.svg";
 import { appConfig } from "@utils/config";
+import classNames from "classnames";
+import Image from "next/image";
 import { useId } from "react";
-
-// import { AppDemo } from "@/components/AppDemo";
-// import { AppStoreLink } from "@/components/AppStoreLink";
-// import { Button } from "@/components/Button";
-// import { Container } from "@/components/Container";
-// import { PhoneFrame } from "@/components/PhoneFrame";
-// import logoBbc from "@/images/logos/bbc.svg";
-// import logoCbs from "@/images/logos/cbs.svg";
-// import logoCnn from "@/images/logos/cnn.svg";
-// import logoFastCompany from "@/images/logos/fast-company.svg";
-// import logoForbes from "@/images/logos/forbes.svg";
-// import logoHuffpost from "@/images/logos/huffpost.svg";
-// import logoTechcrunch from "@/images/logos/techcrunch.svg";
-// import logoWired from "@/images/logos/wired.svg";
 
 function BackgroundIllustration(props: any) {
   let id = useId();
@@ -88,7 +83,7 @@ function BackgroundIllustration(props: any) {
 
 export function Hero() {
   return (
-    <div className="py-20 overflow-hidden sm:py-32 lg:pb-32 xl:pb-36 global-container">
+    <div className="py-20 overflow-hidden sm:py-24 lg:pb-24 xl:pb-36 global-container">
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
         <div className="relative z-10 max-w-2xl mx-auto text-gray-800 lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
           <h2 className="text-2xl font-medium tracking-tight">
@@ -113,38 +108,49 @@ export function Hero() {
                 <PlayIcon className="flex-none w-6 h-6" />
                 <span className="ml-2.5">Watch the video</span>
               </Button> */}
-            <Button variant="primary" label="Start Your Collection Today" />
+            <Button variant="primary" label="Shop Your Collection Today" />
           </div>
         </div>
         <div className="relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">
           <BackgroundIllustration className="absolute left-1/2 top-4 h-[1026px] w-[1026px] -translate-x-1/3 stroke-gray-300/70 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:top-16 sm:-translate-x-1/2 lg:-top-16 lg:ml-12 xl:-top-14 xl:ml-0" />
-          <div className="-mx-4 h-[448px] px-9  sm:mx-0 lg:absolute lg:-inset-x-10 lg:-bottom-20 lg:-top-48 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32">
-            <ModelViewer modelPath="/assets/glbs/toyota_supra_a80_1993.glb" />
+          <div className="-mx-4 h-[448px] px-9 sm:mx-0 lg:absolute lg:-inset-x-10 lg:-bottom-20 lg:-top-40 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32">
+            {/* <ModelViewer modelPath="/assets/glbs/toyota_supra_a80_1993.glb" /> */}
+            <Image
+              src={"/assets/images/hero_img_b.png"}
+              alt="hero-background"
+              width={800}
+              height={800}
+            />
           </div>
         </div>
         <div className="relative -mt-4 lg:col-span-7 lg:mt-0 xl:col-span-6">
           <p className="text-sm font-semibold text-center text-gray-800 lg:text-left">
-            As featured in
+            Featured Brands
           </p>
-          {/* <ul
-                role="list"
-                className="flex flex-wrap justify-center max-w-xl mx-auto mt-8 gap-x-10 gap-y-8 lg:mx-0 lg:justify-start"
-              >
-                {[
-                  ["Forbes", logoForbes],
-                  ["TechCrunch", logoTechcrunch],
-                  ["Wired", logoWired],
-                  ["CNN", logoCnn, "hidden xl:block"],
-                  ["BBC", logoBbc],
-                  ["CBS", logoCbs],
-                  ["Fast Company", logoFastCompany],
-                  ["HuffPost", logoHuffpost, "hidden xl:block"],
-                ].map(([name, logo, className]) => (
-                  <li key={name} className={clsx("flex", className)}>
-                    <Image src={logo} alt={name} className="h-8" unoptimized />
-                  </li>
-                ))}
-              </ul> */}
+          <ul
+            role="list"
+            className="flex flex-wrap justify-center max-w-xl mx-auto mt-8 gap-x-8 gap-y-8 lg:mx-0 lg:justify-start"
+          >
+            {[
+              ["BMW", logoBmw],
+              ["Mercedes-Benz", logoBenz],
+              ["Ford", logoFord],
+              ["Toyota", logoToyota, "hidden xl:block"],
+              ["Volkswagen", logoVW],
+              ["Audi", logoAudi],
+              ["Porsche", logoPorsche],
+              ["Honda", logoHonda, "hidden xl:block"],
+            ].map(([name, logo, className]) => (
+              <li key={name} className={classNames("flex", className)}>
+                <Image
+                  src={logo}
+                  alt={name}
+                  className="h-12 duration-200 hover:scale-110"
+                  unoptimized
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
