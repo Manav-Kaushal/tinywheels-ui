@@ -85,7 +85,7 @@ export function Hero() {
   return (
     <div className="py-20 overflow-hidden sm:py-24 lg:pb-24 xl:pb-36 global-container">
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
-        <div className="relative z-10 max-w-2xl mx-auto text-gray-800 lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
+        <div className="relative z-10 max-w-2xl mx-auto text-gray-800 lg:col-span-7 lg:max-w-none xl:col-span-6">
           <h2 className="text-2xl font-medium tracking-tight">
             Discover the World of {appConfig.name}
           </h2>

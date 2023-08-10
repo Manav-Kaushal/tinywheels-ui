@@ -1,7 +1,8 @@
-import Badge from "@components/Badge";
+import Drawer from "@components/Drawer";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   HeartIcon,
+  MagnifyingGlassIcon,
   PowerIcon,
   ShoppingBagIcon,
   XMarkIcon,
@@ -19,6 +20,7 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ user }) => {
   const { theme, setTheme } = useTheme();
+  const [showCart, setShowCart] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -128,10 +130,12 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           </Link>
         </Popover.Group> */}
         <div className="flex items-center space-x-6">
+          <MagnifyingGlassIcon className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
           <HeartIcon className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
-          <Badge count={0} countCenter>
-            <ShoppingBagIcon className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
-          </Badge>
+          <ShoppingBagIcon
+            className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600"
+            onClick={() => setShowCart(true)}
+          />
           <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-4">
             {user && user?.token ? (
               <Menu as="div" className="relative inline-block text-left">
@@ -203,6 +207,8 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
       <Dialog
         as="div"
         className="lg:hidden"
@@ -294,6 +300,15 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           </div>
         </Dialog.Panel>
       </Dialog>
+
+      {/* Cart Drawer */}
+      <Drawer
+        title="My Cart"
+        open={showCart}
+        onClose={() => setShowCart(false)}
+      >
+        Test
+      </Drawer>
     </header>
   );
 };

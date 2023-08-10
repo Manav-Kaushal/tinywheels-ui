@@ -21,7 +21,7 @@ type AppPropsWithLayout = AppProps & {
 function App({
   Component,
   pageProps: { session, ...pageProps },
-  }: AppPropsWithLayout) {
+}: AppPropsWithLayout) {
   const Layout = (Component as any).Layout || BaseLayout;
 
   return (
@@ -32,7 +32,8 @@ function App({
       <Toaster />
       <NextSeo {...defaultSEO} />
       <SessionProvider session={session}>
-        <ThemeProvider>
+        {/* enableSystem is false,  default theme is light */}
+        <ThemeProvider enableSystem={false}>
           <Layout>
             <Component {...pageProps} />
           </Layout>
