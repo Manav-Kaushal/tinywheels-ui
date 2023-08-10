@@ -48,16 +48,16 @@ const Login = (props: Props) => {
     <>
       <div className="flex min-h-full pt-16 overflow-hidden sm:py-28">
         <div className="flex flex-col w-full max-w-lg px-4 mx-auto sm:px-6">
-          <div className="relative mt-12 sm:mt-16">
+          <div className="relative">
             <CirclesBackground
               width="1090"
               height="1090"
-              className="absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300/30 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:-top-9 sm:h-auto"
+              className="absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300/50 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:-top-9 sm:h-auto"
             />
-            <h1 className="text-2xl font-medium tracking-tight text-center text-gray-900">
+            <h1 className="text-3xl font-medium tracking-tight text-center text-gray-900">
               Sign in to account
             </h1>
-            <p className="mt-3 text-lg text-center text-gray-600">
+            <p className="mt-3 text-base text-center text-gray-600">
               <>
                 Don&apos;t have an account?{" "}
                 <Link href="/register" className="text-cyan-600">

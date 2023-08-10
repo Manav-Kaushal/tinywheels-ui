@@ -83,7 +83,7 @@ function BackgroundIllustration(props: any) {
 
 export function Hero() {
   return (
-    <div className="py-20 overflow-hidden sm:py-24 lg:pb-24 xl:pb-36 global-container">
+    <div className="py-20 overflow-hidden sm:py-20 lg:pb-24 xl:pb-36 global-container">
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
         <div className="relative z-10 max-w-2xl mx-auto text-gray-800 lg:col-span-7 lg:max-w-none xl:col-span-6">
           <h2 className="text-2xl font-medium tracking-tight">
@@ -113,7 +113,7 @@ export function Hero() {
         </div>
         <div className="relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">
           <BackgroundIllustration className="absolute left-1/2 top-4 h-[1026px] w-[1026px] -translate-x-1/3 stroke-gray-300/70 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:top-16 sm:-translate-x-1/2 lg:-top-16 lg:ml-12 xl:-top-14 xl:ml-0" />
-          <div className="-mx-4 h-[448px] px-9 sm:mx-0 lg:absolute lg:-inset-x-10 lg:-bottom-20 lg:-top-40 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32">
+          <div className="h-[400px] px-8 sm:mx-0 lg:absolute lg:-inset-x-20 lg:-bottom-20 lg:-top-40 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-30">
             {/* <ModelViewer modelPath="/assets/glbs/toyota_supra_a80_1993.glb" /> */}
             <Image
               src={"/assets/images/hero_img_b.png"}
@@ -123,13 +123,13 @@ export function Hero() {
             />
           </div>
         </div>
-        <div className="relative -mt-4 lg:col-span-7 lg:mt-0 xl:col-span-6">
+        <div className="relative -mt-4 lg:col-span-7 lg:-mt-4 xl:col-span-6">
           <p className="text-sm font-semibold text-center text-gray-800 lg:text-left">
             Featured Brands
           </p>
           <ul
             role="list"
-            className="flex flex-wrap justify-center max-w-xl mx-auto mt-8 gap-x-8 gap-y-8 lg:mx-0 lg:justify-start"
+            className="flex flex-wrap justify-center max-w-xl mx-auto mt-8 gap-x-6 gap-y-8 lg:mx-0 lg:justify-start"
           >
             {[
               ["BMW", logoBmw],

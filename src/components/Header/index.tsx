@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
   return (
     <header className="bg-white shadow-md">
       <nav
-        className="flex items-center justify-between py-4 global-container"
+        className="flex items-center justify-between py-3 global-container"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
@@ -130,10 +130,10 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           </Link>
         </Popover.Group> */}
         <div className="flex items-center space-x-6">
-          <MagnifyingGlassIcon className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
-          <HeartIcon className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
+          <MagnifyingGlassIcon className="w-5 h-5 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
+          <HeartIcon className="w-5 h-5 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
           <ShoppingBagIcon
-            className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600"
+            className="w-5 h-5 text-gray-800 duration-200 cursor-pointer hover:text-primary-600"
             onClick={() => setShowCart(true)}
           />
           <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-4">
@@ -200,7 +200,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 </Transition>
               </Menu>
             ) : (
-              <p className="link" onClick={() => signIn()}>
+              <p className="text-sm link" onClick={() => signIn()}>
                 Log in/Signup
               </p>
             )}
