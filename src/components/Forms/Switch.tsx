@@ -1,5 +1,5 @@
 import { Switch } from "@headlessui/react";
-import { classNames } from "@utils/helpers";
+import classNames from "classnames";
 import { useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 
