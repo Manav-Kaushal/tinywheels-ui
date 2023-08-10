@@ -1,5 +1,11 @@
+import Badge from "@components/Badge";
 import { Dialog, Menu, Transition } from "@headlessui/react";
-import { PowerIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  HeartIcon,
+  PowerIcon,
+  ShoppingBagIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { appConfig } from "@utils/config";
 import { signIn, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
@@ -121,33 +127,38 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
             Company
           </Link>
         </Popover.Group> */}
-        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-4">
-          {user && user?.token ? (
-            <Menu as="div" className="relative inline-block text-left">
-              <div>
-                <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-transparent text-sm font-semibold text-gray-900 shadow-sm">
-                  <span className="inline-flex items-center justify-center w-10 h-10 bg-gray-500 rounded-full">
-                    <span className="font-medium leading-none text-white">
-                      {user.name
-                        .split(" ")
-                        .map((word: string) => word.charAt(0))
-                        .join("")}
+        <div className="flex items-center space-x-6">
+          <HeartIcon className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
+          <Badge count={0} countCenter>
+            <ShoppingBagIcon className="w-6 h-6 text-gray-800 duration-200 cursor-pointer hover:text-primary-600" />
+          </Badge>
+          <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-4">
+            {user && user?.token ? (
+              <Menu as="div" className="relative inline-block text-left">
+                <div>
+                  <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-transparent text-sm font-semibold text-gray-900 shadow-sm">
+                    <span className="inline-flex items-center justify-center w-10 h-10 bg-gray-500 rounded-full">
+                      <span className="font-medium leading-none text-white">
+                        {user.name
+                          .split(" ")
+                          .map((word: string) => word.charAt(0))
+                          .join("")}
+                      </span>
                     </span>
-                  </span>
-                </Menu.Button>
-              </div>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items className="absolute right-0 z-[100] w-40 mt-2 mr-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="p-1">
-                    {/* <Menu.Item>
+                  </Menu.Button>
+                </div>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute right-0 z-[100] w-40 mt-2 mr-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="p-1">
+                      {/* <Menu.Item>
                           {({ active }) => (
                             <span
                               onClick={() =>
@@ -163,32 +174,33 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                             </span>
                           )}
                         </Menu.Item> */}
-                    <Menu.Item>
-                      {({ active }) => (
-                        <div
-                          onClick={() =>
-                            signOut({
-                              redirect: true,
-                              callbackUrl: appConfig.websiteUrl,
-                            })
-                          }
-                          className={`${
-                            active ? "bg-neutral-200 pl-3" : ""
-                          } group flex w-full items-center rounded-md px-2 py-2 border-b cursor-pointer transition-all duration-200 ease-in-out text-gray-900`}
-                        >
-                          <PowerIcon className="w-5 h-5 mr-2" /> Logout
-                        </div>
-                      )}
-                    </Menu.Item>
-                  </div>
-                </Menu.Items>
-              </Transition>
-            </Menu>
-          ) : (
-            <p className="link" onClick={() => signIn()}>
-              Log in/Signup
-            </p>
-          )}
+                      <Menu.Item>
+                        {({ active }) => (
+                          <div
+                            onClick={() =>
+                              signOut({
+                                redirect: true,
+                                callbackUrl: appConfig.websiteUrl,
+                              })
+                            }
+                            className={`${
+                              active ? "bg-neutral-200 pl-3" : ""
+                            } group flex w-full items-center rounded-md px-2 py-2 border-b cursor-pointer transition-all duration-200 ease-in-out text-gray-900`}
+                          >
+                            <PowerIcon className="w-5 h-5 mr-2" /> Logout
+                          </div>
+                        )}
+                      </Menu.Item>
+                    </div>
+                  </Menu.Items>
+                </Transition>
+              </Menu>
+            ) : (
+              <p className="link" onClick={() => signIn()}>
+                Log in/Signup
+              </p>
+            )}
+          </div>
         </div>
       </nav>
       <Dialog
