@@ -12,6 +12,7 @@ import { signIn, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 
 type HeaderProps = {
@@ -19,6 +20,7 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ user }) => {
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [showCart, setShowCart] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -142,7 +144,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 <div>
                   <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-transparent text-xs font-semibold text-gray-900 shadow-sm">
                     <span className="inline-flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full">
-                      <span className="font-medium leading-none text-white">
+                      <span className="font-medium leading-none text-white uppercase">
                         {user.name
                           .split(" ")
                           .map((word: string) => word.charAt(0))
@@ -200,8 +202,17 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 </Transition>
               </Menu>
             ) : (
-              <p className="text-sm link" onClick={() => signIn()}>
-                Log in/Signup
+              <p>
+                <span className="text-sm link" onClick={() => signIn()}>
+                  Log in
+                </span>
+                /
+                <span
+                  className="text-sm link"
+                  onClick={() => router.push("/register")}
+                >
+                  Signup
+                </span>
               </p>
             )}
           </div>

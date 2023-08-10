@@ -29,7 +29,7 @@ const Login = (props: Props) => {
       });
 
       if (response.ok) {
-        toast.success("Login successful! Enjoy your experience.");
+        toast.success("Welcome back! You're now logged in.");
         router.push("/");
       } else {
         toast.error(

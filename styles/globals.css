@@ -34,5 +34,5 @@ body {
 }
 
 .link {
-  @apply font-semibold leading-6 cursor-pointer hover:text-primary-600 duration-200;
+  @apply font-medium leading-6 cursor-pointer hover:text-primary-600 duration-200;
 }
