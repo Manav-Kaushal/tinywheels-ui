@@ -140,8 +140,8 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
             {user && user?.token ? (
               <Menu as="div" className="relative inline-block text-left">
                 <div>
-                  <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-transparent text-sm font-semibold text-gray-900 shadow-sm">
-                    <span className="inline-flex items-center justify-center w-10 h-10 bg-gray-500 rounded-full">
+                  <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-transparent text-xs font-semibold text-gray-900 shadow-sm">
+                    <span className="inline-flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full">
                       <span className="font-medium leading-none text-white">
                         {user.name
                           .split(" ")
@@ -160,7 +160,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute right-0 z-[100] w-40 mt-2 mr-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items className="text-sm absolute right-0 z-[100] w-40 mt-2 mr-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="p-1">
                       {/* <Menu.Item>
                           {({ active }) => (
@@ -189,9 +189,9 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                             }
                             className={`${
                               active ? "bg-neutral-200 pl-3" : ""
-                            } group flex w-full items-center rounded-md px-2 py-2 border-b cursor-pointer transition-all duration-200 ease-in-out text-gray-900`}
+                            } group flex w-full items-center rounded-md px-2 py-2 cursor-pointer duration-200 text-gray-900`}
                           >
-                            <PowerIcon className="w-5 h-5 mr-2" /> Logout
+                            <PowerIcon className="w-4 h-4 mr-2" /> Logout
                           </div>
                         )}
                       </Menu.Item>
