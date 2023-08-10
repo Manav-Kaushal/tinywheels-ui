@@ -1,11 +1,11 @@
-import { Dialog } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Dialog, Menu, Transition } from "@headlessui/react";
+import { PowerIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { appConfig } from "@utils/config";
 import { signIn, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 type HeaderProps = {
   user: any;
@@ -122,13 +122,68 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           </Link>
         </Popover.Group> */}
         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-4">
-          {user?.token ? (
-            <>
-              <p className="text-sm">{user.name}</p>
-              <p className="link" onClick={() => signOut()}>
-                Sign Out
-              </p>
-            </>
+          {user && user?.token ? (
+            <Menu as="div" className="relative inline-block text-left">
+              <div>
+                <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-transparent text-sm font-semibold text-gray-900 shadow-sm">
+                  <span className="inline-flex items-center justify-center w-10 h-10 bg-gray-500 rounded-full">
+                    <span className="font-medium leading-none text-white">
+                      {user.name
+                        .split(" ")
+                        .map((word: string) => word.charAt(0))
+                        .join("")}
+                    </span>
+                  </span>
+                </Menu.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 z-[100] w-40 mt-2 mr-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="p-1">
+                    {/* <Menu.Item>
+                          {({ active }) => (
+                            <span
+                              onClick={() =>
+                                router.push(
+                                  sidebarNavigation[0].children[0].path
+                                )
+                              }
+                              className={`${
+                                active ? "bg-gray-200 font-semibold pl-3" : ""
+                              } group flex w-full items-center rounded-md px-2 py-2 border-b cursor-pointer transition-all duration-200 ease-in-out text-gray-900`}
+                            >
+                              My Dashboard
+                            </span>
+                          )}
+                        </Menu.Item> */}
+                    <Menu.Item>
+                      {({ active }) => (
+                        <div
+                          onClick={() =>
+                            signOut({
+                              redirect: true,
+                              callbackUrl: appConfig.websiteUrl,
+                            })
+                          }
+                          className={`${
+                            active ? "bg-neutral-200 pl-3" : ""
+                          } group flex w-full items-center rounded-md px-2 py-2 border-b cursor-pointer transition-all duration-200 ease-in-out text-gray-900`}
+                        >
+                          <PowerIcon className="w-5 h-5 mr-2" /> Logout
+                        </div>
+                      )}
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
           ) : (
             <p className="link" onClick={() => signIn()}>
               Log in/Signup

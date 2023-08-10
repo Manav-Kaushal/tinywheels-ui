@@ -145,7 +145,7 @@ export function Hero() {
                 <Image
                   src={logo}
                   alt={name}
-                  className="h-12 duration-200 hover:scale-110"
+                  className="h-12 duration-200 hover:scale-125 grayscale hover:grayscale-0"
                   unoptimized
                 />
               </li>

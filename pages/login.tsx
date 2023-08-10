@@ -2,6 +2,7 @@ import CirclesBackground from "@components/Backgrounds/CirclesBackground";
 import Button from "@components/Button";
 import Input from "@components/Forms/Input";
 import Spinner from "@components/Spinner";
+import { appConfig } from "@utils/config";
 import { Form, Formik } from "formik";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
@@ -24,7 +25,7 @@ const Login = (props: Props) => {
         email,
         password,
         redirect: false,
-        callbackUrl: "/",
+        callbackUrl: appConfig.websiteUrl,
       });
 
       if (response.ok) {
