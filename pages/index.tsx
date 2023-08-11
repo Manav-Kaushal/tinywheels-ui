@@ -1,4 +1,4 @@
-import { Hero } from "@src/sections/home/Hero";
+import Hero from "@src/sections/home/Hero";
 import TrendingItems from "@src/sections/home/TrendingItems";
 
 const Home = () => {

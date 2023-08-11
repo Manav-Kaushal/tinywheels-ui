@@ -46,7 +46,7 @@ const Drawer = ({
           leaveTo="opacity-0"
         >
           <div
-            className="absolute inset-0 bg-black opacity-25"
+            className="absolute inset-0 bg-black bg-opacity-40 "
             onClick={onClose}
           />
         </Transition.Child>

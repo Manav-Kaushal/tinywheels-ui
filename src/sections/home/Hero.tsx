@@ -9,6 +9,7 @@ import logoToyota from "@public/assets/brand-logos/toyota.svg";
 import logoVW from "@public/assets/brand-logos/volkswagen.svg";
 import { appConfig } from "@utils/config";
 import classNames from "classnames";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useId } from "react";
 
@@ -81,11 +82,11 @@ function BackgroundIllustration(props: any) {
   );
 }
 
-export function Hero() {
+const Hero = () => {
   return (
     <div className="py-20 overflow-hidden sm:py-20 lg:pb-24 xl:pb-36 global-container">
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
-        <div className="relative z-10 max-w-2xl mx-auto text-gray-800 lg:col-span-7 lg:max-w-none xl:col-span-6">
+        <motion.div className="relative z-10 max-w-2xl mx-auto text-gray-800 lg:col-span-7 lg:max-w-none xl:col-span-6">
           <h2 className="text-2xl font-medium tracking-tight">
             Discover the World of {appConfig.name}
           </h2>
@@ -110,7 +111,7 @@ export function Hero() {
               </Button> */}
             <Button variant="primary" label="Shop Your Collection Today" />
           </div>
-        </div>
+        </motion.div>
         <div className="relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">
           <BackgroundIllustration className="absolute left-1/2 top-4 h-[1026px] w-[1026px] -translate-x-1/3 stroke-gray-300/70 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:top-16 sm:-translate-x-1/2 lg:-top-16 lg:ml-12 xl:-top-14 xl:ml-0" />
           <div className="h-[400px] px-8 sm:mx-0 lg:absolute lg:-inset-x-20 lg:-bottom-20 lg:-top-40 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-30">
@@ -155,4 +156,6 @@ export function Hero() {
       </div>
     </div>
   );
-}
+};
+
+export default Hero;
