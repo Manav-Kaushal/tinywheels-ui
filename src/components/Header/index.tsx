@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
   const router = useRouter();
   const [showCart, setShowCart] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  console.log({ user });
+ 
   return (
     <header className="bg-white shadow-md">
       <nav
