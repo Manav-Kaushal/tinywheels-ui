@@ -9,6 +9,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { appConfig } from "@utils/config";
+import { adminSidebarNavigation } from "@utils/mocks/adminSidebarNavigation";
 import classNames from "classnames";
 import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
@@ -24,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
   const router = useRouter();
   const [showCart, setShowCart] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
- 
+
   return (
     <header className="bg-white shadow-md">
       <nav
@@ -169,7 +170,9 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                           id: 0,
                           label: "Manage Website",
                           onClick: () => {
-                            router.push("/");
+                            router.push(
+                              adminSidebarNavigation[0].children[0].link
+                            );
                           },
                           isAdmin: true,
                           Icon: Cog6ToothIcon,
