@@ -13,8 +13,8 @@ const appConfig = {
   fallbackImage: "/assets/images/placeholder.jpg",
 };
 
-const imageKitConfig = {
-  prefix: "https://ik.imagekit.io/tinywheels",
+const cloudinaryConfig = {
+  baseDeliveryUrl: "https://res.cloudinary.com/tinywheels/image/upload",
 };
 
 const defaultSEO = {
@@ -30,4 +30,4 @@ const defaultSEO = {
   },
 };
 
-export { appConfig, defaultSEO, imageKitConfig };
+export { appConfig, cloudinaryConfig, defaultSEO };

@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import Image from "@components/Image";
 import logoAudi from "@public/assets/brand-logos/audi.svg";
 import logoBmw from "@public/assets/brand-logos/bmw.svg";
 import logoFord from "@public/assets/brand-logos/ford.svg";
@@ -10,7 +11,6 @@ import logoVW from "@public/assets/brand-logos/volkswagen.svg";
 import { appConfig } from "@utils/config";
 import classNames from "classnames";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { useId } from "react";
 
 function BackgroundIllustration(props: any) {
@@ -117,7 +117,7 @@ const Hero = () => {
           <div className="h-[400px] px-8 sm:mx-0 lg:absolute lg:-inset-x-20 lg:-bottom-20 lg:-top-40 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-30">
             {/* <ModelViewer modelPath="/assets/glbs/toyota_supra_a80_1993.glb" /> */}
             <Image
-              src={"/assets/images/hero_img_b.png"}
+              src="/v1691790628/static/hero_img_ws28bv.png"
               alt="hero-background"
               width={800}
               height={800}
@@ -147,7 +147,7 @@ const Hero = () => {
                   src={logo}
                   alt={name}
                   className="h-12 duration-200 hover:scale-125 grayscale hover:grayscale-0"
-                  unoptimized
+                  raw
                 />
               </li>
             ))}

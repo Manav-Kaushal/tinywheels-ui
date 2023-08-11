@@ -32,6 +32,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-lazy-load-image-component": "^1.6.0",
     "react-redux": "^8.1.2",
     "react-table": "^7.8.0",
     "redux": "^4.2.1",
@@ -40,6 +41,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@types/react-lazy-load-image-component": "^1.5.3",
     "@types/react-table": "^7.7.14",
     "@types/three": "^0.155.0"
   }
