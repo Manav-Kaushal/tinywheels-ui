@@ -1,6 +1,7 @@
 import Drawer from "@components/Drawer";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
+  Cog6ToothIcon,
   HeartIcon,
   MagnifyingGlassIcon,
   PowerIcon,
@@ -8,8 +9,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { appConfig } from "@utils/config";
+import classNames from "classnames";
 import { signIn, signOut } from "next-auth/react";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,10 +22,9 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ user }) => {
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
   const [showCart, setShowCart] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  console.log({ user });
   return (
     <header className="bg-white shadow-md">
       <nav
@@ -164,7 +164,57 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 >
                   <Menu.Items className="text-sm absolute right-0 z-[100] w-40 mt-2 mr-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="p-1">
-                      {/* <Menu.Item>
+                      {[
+                        {
+                          id: 0,
+                          label: "Manage Website",
+                          onClick: () => {
+                            router.push("/");
+                          },
+                          isAdmin: true,
+                          Icon: Cog6ToothIcon,
+                        },
+                        // {
+                        //   id: 0,
+                        //   label: "My Account",
+                        //   onClick: () => {
+                        //     router.replace("/account");
+                        //   },
+                        //   isAdmin: true,
+                        // },
+                        {
+                          id: 1,
+                          label: "Sign Out",
+                          onClick: () => {
+                            signOut({
+                              redirect: true,
+                              callbackUrl: appConfig.websiteUrl,
+                            });
+                          },
+                          isAdmin: true,
+                          Icon: PowerIcon,
+                        },
+                      ].map(
+                        (item) =>
+                          item.isAdmin === user.isAdmin && (
+                            <Menu.Item key={item.id}>
+                              {({ active }) => (
+                                <p
+                                  className={classNames(
+                                    active ? "bg-gray-200 pl-3" : "",
+                                    "group flex w-full items-center rounded-md px-2 py-2 cursor-pointer transition-all duration-200 ease-in-out text-gray-900"
+                                  )}
+                                  onClick={item.onClick}
+                                >
+                                  <item.Icon className="w-4 h-4 mr-2" />{" "}
+                                  {item.label}
+                                </p>
+                              )}
+                            </Menu.Item>
+                          )
+                      )}
+                      {/* {user.isAdmin && (
+                        <Menu.Item>
                           {({ active }) => (
                             <span
                               onClick={() =>
@@ -179,15 +229,13 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                               My Dashboard
                             </span>
                           )}
-                        </Menu.Item> */}
+                        </Menu.Item>
+                      )}
                       <Menu.Item>
                         {({ active }) => (
                           <div
                             onClick={() =>
-                              signOut({
-                                redirect: true,
-                                callbackUrl: appConfig.websiteUrl,
-                              })
+                              
                             }
                             className={`${
                               active ? "bg-neutral-200 pl-3" : ""
@@ -196,7 +244,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                             <PowerIcon className="w-4 h-4 mr-2" /> Logout
                           </div>
                         )}
-                      </Menu.Item>
+                      </Menu.Item> */}
                     </div>
                   </Menu.Items>
                 </Transition>
