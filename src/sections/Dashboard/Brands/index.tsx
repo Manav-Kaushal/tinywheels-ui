@@ -110,24 +110,24 @@ const BrandsView = (props: Props) => {
         <Table columns={columns} data={brandsList?.list || []} />
       </div>
 
-      {/* <Drawer
-        title="Add product"
-        open={addProductPanel}
+      {/* <Modal
+        title="Add brand"
+        open={addBrandPanel}
         size="lg"
-        onClose={() => hideAddProductPanel()}
+        onClose={() => hideAddBrandPanel()}
       >
-        <AddProductForm
-          hideAddProductPanel={hideAddProductPanel}
+        <AddBrandForm
+          hideAddBrandPanel={hideAddBrandPanel}
           fetchAllBrands={fetchAllBrands}
         />
-      </Drawer>
+      </Modal>
       <Drawer
-        title="Product Details"
+        title="Brand Details"
         open={detailsPanelVisible}
         size="lg"
-        onClose={() => hideProductDetailsPanel()}
+        onClose={() => hideBrandDetailsPanel()}
       >
-        <DetailsPanel product={productDetails} />
+        <DetailsPanel brand={brandDetails} />
       </Drawer> */}
     </div>
   );
