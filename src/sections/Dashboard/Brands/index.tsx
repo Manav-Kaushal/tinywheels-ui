@@ -1,9 +1,12 @@
 import Button from "@components/Button";
+import CopyToClipboard from "@components/CopyToClipboard";
 import Modal from "@components/Modal";
 import Table from "@components/Table";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import api from "@utils/api";
+import { trimID } from "@utils/helpers";
 import { BrandType } from "@utils/types/Brand";
+import dayjs from "dayjs";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -57,12 +60,20 @@ const BrandsView = ({ user }: Props) => {
         Header: "Name",
         accessor: (row: BrandType) => {
           return (
-            <>
-              <p className="duration-300 cursor-pointer line-clamp-1 hover:text-primary">
-                {row.name}
-              </p>
-              <p>{row._id}</p>
-            </>
+            <p className="duration-300 cursor-pointer line-clamp-1 hover:text-primary-600">
+              {row.name}
+            </p>
+          );
+        },
+      },
+      {
+        Header: "Id",
+        accessor: (row: BrandType) => {
+          return (
+            <div>
+              <span>{trimID(row._id)}</span>
+              <CopyToClipboard textToCopy={row._id} message="ID Copied" />
+            </div>
           );
         },
       },
@@ -75,7 +86,7 @@ const BrandsView = ({ user }: Props) => {
       {
         Header: "Year Founded",
         accessor: (row: BrandType) => {
-          return <p>{row.yearFounded}</p>;
+          return <p>{dayjs(row.yearFounded).format("MMM DD, YYYY")}</p>;
         },
       },
       {
