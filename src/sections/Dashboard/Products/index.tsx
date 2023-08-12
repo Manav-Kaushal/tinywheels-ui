@@ -11,9 +11,9 @@ import { formatCurrency } from "@utils/helpers";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-type Props = {};
+type Props = { user: any };
 
-const ProductsView = (props: Props) => {
+const ProductsView = ({ user }: Props) => {
   const [fetchingProductsList, setFetchingProductsList] = useState(false);
   const [productsList, setProductsList] = useState<{
     list: any[];

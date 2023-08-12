@@ -2,7 +2,7 @@ import { adminSidebarNavigation } from "@utils/mocks/adminSidebarNavigation";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import Header from "../Header";
 
 type Props = {
@@ -12,11 +12,6 @@ type Props = {
 const SideLayout = ({ children }: Props) => {
   const router = useRouter();
   const { data: session } = useSession();
-  const [showTopBar, setShowTopBar] = useState<boolean>(true);
-
-  const toggleTopBar = () => {
-    setShowTopBar((prevState) => !prevState);
-  };
 
   const renderMenuItems = (items: any[]) => {
     return (
@@ -53,7 +48,7 @@ const SideLayout = ({ children }: Props) => {
     <>
       <Header user={session?.user} />
       <div className="h-56 pt-8 text-white bg-primary-700 global-container">
-        <h3 className="text-4xl">Dashboard</h3>
+        <h3 className="text-4xl">Manage Website</h3>
       </div>
       <div className="relative -mt-32 global-container">
         <div className="grid grid-cols-10 gap-8 h-full min-h-[80vh] max-h-[80vh]">

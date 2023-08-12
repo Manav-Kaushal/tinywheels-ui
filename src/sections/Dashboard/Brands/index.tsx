@@ -8,9 +8,11 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import AddBrandForm from "./AddBrandForm";
 
-type Props = {};
+type Props = {
+  user: any;
+};
 
-const BrandsView = (props: Props) => {
+const BrandsView = ({ user }: Props) => {
   const [fetchingBrandsList, setFetchingBrandsList] = useState(false);
   const [brandsList, setBrandsList] = useState<{
     list: BrandType[];
@@ -38,13 +40,14 @@ const BrandsView = (props: Props) => {
         Header: "Logo",
         accessor: (row: BrandType) => {
           return (
-            <Image
-              src={row.logo || ""}
-              alt={row.name}
-              width={48}
-              height={48}
-              className="object-contain p-1 border rounded-md aspect-1"
-            />
+            <div className="relative w-12 aspect-square">
+              <Image
+                src={row.logo || ""}
+                alt={row.name}
+                className="object-contain p-1 border rounded-md"
+                fill
+              />
+            </div>
           );
         },
       },
@@ -118,7 +121,7 @@ const BrandsView = (props: Props) => {
           </h4>
         </div>
         <div className="flex items-center space-x-2">
-          <Button label="Refresh" onClick={() => {}} size="sm" />
+          <Button label="Refresh" onClick={() => fetchAllBrands()} size="sm" />
           <Button
             label="Add"
             size="sm"
@@ -139,6 +142,7 @@ const BrandsView = (props: Props) => {
         onClose={() => toggleAddBrandModal(false)}
       >
         <AddBrandForm
+          token={user?.token}
           toggleAddBrandModal={toggleAddBrandModal}
           fetchAllBrands={fetchAllBrands}
         />
