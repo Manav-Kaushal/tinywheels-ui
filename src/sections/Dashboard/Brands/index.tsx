@@ -1,10 +1,12 @@
 import Button from "@components/Button";
+import Modal from "@components/Modal";
 import Table from "@components/Table";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import api from "@utils/api";
 import { BrandType } from "@utils/types/Brand";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import AddBrandForm from "./AddBrandForm";
 
 type Props = {};
 
@@ -14,6 +16,21 @@ const BrandsView = (props: Props) => {
     list: BrandType[];
     total: number;
   }>({ list: [], total: 0 });
+
+  // Modals & Drawers
+  const [addBrandModal, setAddBrandModal] = useState(false);
+
+  const toggleAddBrandModal = (show: boolean, callback?: () => void) => {
+    try {
+      setAddBrandModal(show);
+      if (callback) {
+        callback();
+      }
+    } catch (error) {
+      // Handle any errors that might occur during state update
+      console.error("Error toggling add brand modal:", error);
+    }
+  };
 
   const columns: any = useMemo(
     () => [
@@ -102,7 +119,13 @@ const BrandsView = (props: Props) => {
         </div>
         <div className="flex items-center space-x-2">
           <Button label="Refresh" onClick={() => {}} size="sm" />
-          <Button label="Add" size="sm" />
+          <Button
+            label="Add"
+            size="sm"
+            onClick={() => {
+              toggleAddBrandModal(true);
+            }}
+          />
         </div>
       </div>
 
@@ -110,18 +133,17 @@ const BrandsView = (props: Props) => {
         <Table columns={columns} data={brandsList?.list || []} />
       </div>
 
-      {/* <Modal
+      <Modal
         title="Add brand"
-        open={addBrandPanel}
-        size="lg"
-        onClose={() => hideAddBrandPanel()}
+        open={addBrandModal}
+        onClose={() => toggleAddBrandModal(false)}
       >
         <AddBrandForm
-          hideAddBrandPanel={hideAddBrandPanel}
+          toggleAddBrandModal={toggleAddBrandModal}
           fetchAllBrands={fetchAllBrands}
         />
       </Modal>
-      <Drawer
+      {/*  <Drawer
         title="Brand Details"
         open={detailsPanelVisible}
         size="lg"
