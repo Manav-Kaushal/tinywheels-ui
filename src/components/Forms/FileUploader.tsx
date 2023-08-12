@@ -1,47 +1,42 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useField } from "formik";
 import Image from "next/image";
-import { ChangeEvent, InputHTMLAttributes, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-interface FileUploaderProps extends InputHTMLAttributes<HTMLInputElement> {
+interface FileUploaderProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
-  initialImageUrls?: string[];
-  multiple?: boolean;
+  imgSrc?: string;
 }
 
-const FileUploader = ({
-  name,
-  label,
-  initialImageUrls,
-  multiple,
-  ...rest
-}: FileUploaderProps) => {
-  const [selectedFiles, setSelectedFiles] = useState<any[]>(
-    initialImageUrls || []
-  );
+const FileUploader = ({ name, label, imgSrc, ...rest }: FileUploaderProps) => {
   const [field, meta, helpers] = useField(name);
+  const [src, setSrc] = useState<string | File | null>(null);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.currentTarget.files;
-    if (files) {
-      const updatedFiles = Array.from(files);
-      setSelectedFiles(updatedFiles);
-      helpers.setValue(updatedFiles);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSrc(file);
+      helpers.setValue(file);
     }
   };
 
-  const handleRemoveFile = (index: number) => {
-    const updatedFiles = selectedFiles.filter((_, i) => i !== index);
-    setSelectedFiles(updatedFiles);
-    helpers.setValue(updatedFiles);
+  const handleRemoveFile = () => {
+    if (imgSrc) {
+      setSrc(imgSrc);
+      helpers.setValue(imgSrc);
+    } else {
+      setSrc(null);
+      helpers.setValue(null);
+    }
   };
 
   useEffect(() => {
-    if (initialImageUrls) {
-      setSelectedFiles(initialImageUrls);
+    if (imgSrc) {
+      setSrc(imgSrc);
     }
-  }, [initialImageUrls]);
+  }, [imgSrc]);
 
   return (
     <div>
@@ -52,41 +47,30 @@ const FileUploader = ({
           name={name}
           onChange={handleFileChange}
           onBlur={field.onBlur}
-          multiple={multiple} // Pass the multiple prop to the input
           hidden
           {...rest}
         />
         <p className="text-blue-500">
-          Upload {label} {rest.required ? "*" : ""}
+          {label} {rest.required ? "*" : ""}
         </p>
       </label>
-      <div className="flex flex-wrap gap-2 mt-2">
-        {selectedFiles.map((file, index) => (
-          <div key={index} className="relative w-24 aspect-square">
-            {typeof file === "string" ? (
-              <Image
-                src={file}
-                alt="preview"
-                className="object-cover border rounded-md"
-                fill
-              />
-            ) : (
-              <Image
-                src={URL.createObjectURL(file)}
-                alt="preview"
-                className="object-cover border rounded-md"
-                fill
+      <div className="flex flex-wrap">
+        {src && (
+          <div className="relative w-24 h-24 m-2 border rounded-lg">
+            <Image
+              src={typeof src === "string" ? src : URL.createObjectURL(src)}
+              alt="Uploaded img"
+              className="object-contain p-2 rounded-lg"
+              layout="fill"
+            />
+            {typeof src === "object" && (
+              <XMarkIcon
+                className="absolute w-5 h-5 p-1 text-gray-100 duration-200 rounded-full cursor-pointer bg-gray-500/60 right-1 top-1 hover:text-white hover:bg-gray-500/90"
+                onClick={handleRemoveFile}
               />
             )}
-            <button
-              type="button"
-              className="absolute top-0 right-0 p-1 bg-white rounded-full cursor-pointer bg-opacity-70"
-              onClick={() => handleRemoveFile(index)}
-            >
-              <XMarkIcon className="w-4 h-4 text-gray-500" />
-            </button>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

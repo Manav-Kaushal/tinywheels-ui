@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import CopyToClipboard from "@components/CopyToClipboard";
+import Drawer from "@components/Drawer";
 import Modal from "@components/Modal";
 import Table from "@components/Table";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -11,31 +12,44 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import AddBrandForm from "./AddBrandForm";
+import EditBrandForm from "./EditBrandForm";
 
 type Props = {
   user: any;
 };
 
 const BrandsView = ({ user }: Props) => {
-  const [fetchingBrandsList, setFetchingBrandsList] = useState(false);
-  const [deletingBrand, setDeletingBrand] = useState(false);
+  const [fetchingBrandsList, setFetchingBrandsList] = useState<boolean>(false);
+  const [deletingBrand, setDeletingBrand] = useState<boolean>(false);
   const [brandsList, setBrandsList] = useState<{
     list: BrandType[];
     total: number;
   }>({ list: [], total: 0 });
+  const [brandToEditId, setBrandToEditId] = useState<string>("");
 
   // Modals & Drawers
   const [addBrandModal, setAddBrandModal] = useState(false);
+  const [editBrandDrawer, setEditBrandDrawer] = useState(false);
 
-  const toggleAddBrandModal = (show: boolean, callback?: () => void) => {
+  const toggleAddBrandModal = (value: boolean, callback?: () => void) => {
     try {
-      setAddBrandModal(show);
+      setAddBrandModal(value);
       if (callback) {
         callback();
       }
     } catch (error) {
-      // Handle any errors that might occur during state update
       console.error("Error toggling add brand modal:", error);
+    }
+  };
+
+  const toggleEditBrandDrawer = (value: boolean, callback?: () => void) => {
+    try {
+      setEditBrandDrawer(value);
+      if (callback) {
+        callback();
+      }
+    } catch (error) {
+      console.error("Error toggling edit brand drawer:", error);
     }
   };
 
@@ -59,15 +73,11 @@ const BrandsView = ({ user }: Props) => {
       {
         Header: "Name",
         accessor: (row: BrandType) => {
-          return (
-            <p className="duration-300 cursor-pointer line-clamp-1 hover:text-primary-600">
-              {row.name}
-            </p>
-          );
+          return <p className="line-clamp-1">{row.name}</p>;
         },
       },
       {
-        Header: "Id",
+        Header: "ID",
         accessor: (row: BrandType) => {
           return (
             <div>
@@ -95,12 +105,16 @@ const BrandsView = ({ user }: Props) => {
           return (
             <div className="flex items-center space-x-2 text-sm cursor-default">
               <PencilSquareIcon
-                className="w-5 h-5 cursor-pointer text-primary/75 hover:text-primary transition__300"
-                // onClick={() => triggerEditCategoryDrawer(row)}
+                className="w-5 h-5 duration-200 cursor-pointer text-primary-600/50 hover:text-primary-600"
+                onClick={() =>
+                  toggleEditBrandDrawer(true, () => {
+                    setBrandToEditId(row._id);
+                  })
+                }
               />
-              <span>|</span>
+              <span className="text-gray-500">|</span>
               <TrashIcon
-                className="w-5 h-5 cursor-pointer text-red-500/75 hover:text-red-500 transition__300"
+                className="w-5 h-5 duration-200 cursor-pointer text-red-500/50 hover:text-red-500"
                 onClick={() => handleBrandDelete(row._id)}
               />
             </div>
@@ -180,6 +194,7 @@ const BrandsView = ({ user }: Props) => {
         />
       </div>
 
+      {/* Add Brand */}
       <Modal
         title="Add brand"
         open={addBrandModal}
@@ -191,14 +206,33 @@ const BrandsView = ({ user }: Props) => {
           fetchAllBrands={fetchAllBrands}
         />
       </Modal>
-      {/*  <Drawer
-        title="Brand Details"
-        open={detailsPanelVisible}
+
+      {/* Edit Brand */}
+      <Drawer
+        title="Edit Brand Details"
+        open={editBrandDrawer}
         size="lg"
-        onClose={() => hideBrandDetailsPanel()}
+        onClose={() =>
+          toggleEditBrandDrawer(false, () => {
+            setTimeout(() => {
+              setBrandToEditId("");
+            }, 500);
+          })
+        }
       >
-        <DetailsPanel brand={brandDetails} />
-      </Drawer> */}
+        <EditBrandForm
+          token={user?.token}
+          id={brandToEditId || ""}
+          callback={() => {
+            toggleEditBrandDrawer(false, () => {
+              setTimeout(() => {
+                setBrandToEditId("");
+              }, 500);
+            });
+            fetchAllBrands();
+          }}
+        />
+      </Drawer>
     </div>
   );
 };

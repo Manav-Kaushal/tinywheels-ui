@@ -43,7 +43,7 @@ const AddBrandForm = ({
       formData.append("fullName", fullName);
       formData.append("country", country);
       formData.append("yearFounded", yearFounded);
-      formData.append("logo", logo[0]);
+      formData.append("logo", logo);
 
       const res = await api.post("/brands/new", formData, {
         headers: {
@@ -66,7 +66,7 @@ const AddBrandForm = ({
   };
 
   return (
-    <div>
+    <div className="mt-6">
       <Formik
         initialValues={initialValues}
         onSubmit={(values, { setSubmitting }) => {
@@ -81,8 +81,18 @@ const AddBrandForm = ({
               <Input name="country" label="Country" required />
               <Input name="yearFounded" label="Year Founded" required />
             </div>
-            <FileUploader name="logo" label="Logo" accept="image/*" required />
-            <Button label={isSubmitting ? <Spinner /> : "Submit"} center />
+            <FileUploader
+              name="logo"
+              label="Upload Logo"
+              accept="image/*"
+              required
+            />
+            <Button
+              type="submit"
+              size="sm"
+              label={isSubmitting ? <Spinner /> : "Submit"}
+              center
+            />
           </Form>
         )}
       </Formik>

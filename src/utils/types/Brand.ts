@@ -4,5 +4,5 @@ export type BrandType = {
   fullName: string;
   country: string;
   yearFounded: string;
-  logo?: string;
+  logo: string;
 };

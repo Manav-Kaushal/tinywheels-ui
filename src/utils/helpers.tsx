@@ -22,3 +22,11 @@ export function trimID(id: string) {
   const lastPart = id.substring(id.length - 4);
   return `${firstPart}...${lastPart}`;
 }
+
+export function createURLFromFile(file: File) {
+  if (!(file instanceof File)) {
+    throw new Error("Input is not a valid File object");
+  }
+
+  return URL.createObjectURL(file);
+}
