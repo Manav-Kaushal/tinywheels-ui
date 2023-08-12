@@ -1,12 +1,14 @@
+import Loader from "@components/Loader";
 import React from "react";
 import { useTable } from "react-table";
 
 interface TableProps {
   columns: any[];
   data: any[];
+  loading: boolean;
 }
 
-const Table: React.FC<TableProps> = ({ columns, data }) => {
+const Table: React.FC<TableProps> = ({ columns, data, loading }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
@@ -24,7 +26,12 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
           </tr>
         ))}
       </thead>
-      <tbody {...getTableBodyProps()}>
+      <tbody className="relative" {...getTableBodyProps()}>
+        {loading && (
+          <div className="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-10">
+            <Loader />
+          </div>
+        )}
         {rows.map((row) => {
           prepareRow(row);
           return (

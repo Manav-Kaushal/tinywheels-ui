@@ -6,6 +6,7 @@ import api from "@utils/api";
 import { BrandType } from "@utils/types/Brand";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "react-hot-toast";
 import AddBrandForm from "./AddBrandForm";
 
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
 
 const BrandsView = ({ user }: Props) => {
   const [fetchingBrandsList, setFetchingBrandsList] = useState(false);
+  const [deletingBrand, setDeletingBrand] = useState(false);
   const [brandsList, setBrandsList] = useState<{
     list: BrandType[];
     total: number;
@@ -55,9 +57,12 @@ const BrandsView = ({ user }: Props) => {
         Header: "Name",
         accessor: (row: BrandType) => {
           return (
-            <p className="duration-300 cursor-pointer line-clamp-1 hover:text-primary">
-              {row.name}
-            </p>
+            <>
+              <p className="duration-300 cursor-pointer line-clamp-1 hover:text-primary">
+                {row.name}
+              </p>
+              <p>{row._id}</p>
+            </>
           );
         },
       },
@@ -85,7 +90,7 @@ const BrandsView = ({ user }: Props) => {
               <span>|</span>
               <TrashIcon
                 className="w-5 h-5 cursor-pointer text-red-500/75 hover:text-red-500 transition__300"
-                // onClick={() => handleDelete(row._id)}
+                onClick={() => handleBrandDelete(row._id)}
               />
             </div>
           );
@@ -107,6 +112,30 @@ const BrandsView = ({ user }: Props) => {
         setFetchingBrandsList(false);
       });
   }, []);
+
+  const handleBrandDelete = async (id: string) => {
+    setDeletingBrand(true);
+
+    try {
+      const response: any = await api.delete("/brands/" + id);
+
+      if (response.ok) {
+        toast.success("Brand deleted successfully!");
+        fetchAllBrands();
+      } else {
+        const errorMessage = response?.data?.message || "Something went wrong";
+        toast.error(`Brand could not be deleted! Error: ${errorMessage}`);
+        console.error("Brand deletion error:", errorMessage);
+      }
+    } catch (error) {
+      toast.error(
+        "An error occurred while deleting the brand. Check console for more details."
+      );
+      console.error("Error deleting brand:", error);
+    } finally {
+      setDeletingBrand(false);
+    }
+  };
 
   useEffect(() => {
     fetchAllBrands();
@@ -133,7 +162,11 @@ const BrandsView = ({ user }: Props) => {
       </div>
 
       <div className="mt-6">
-        <Table columns={columns} data={brandsList?.list || []} />
+        <Table
+          columns={columns}
+          data={brandsList?.list || []}
+          loading={fetchingBrandsList || deletingBrand}
+        />
       </div>
 
       <Modal
