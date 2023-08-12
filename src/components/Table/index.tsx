@@ -14,17 +14,12 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
     });
 
   return (
-    <table {...getTableProps()} className="w-full table-auto">
+    <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th
-                {...column.getHeaderProps()}
-                className="px-4 py-2 font-medium bg-gray-100 border"
-              >
-                {column.render("Header")}
-              </th>
+              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
             ))}
           </tr>
         ))}
@@ -35,11 +30,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                return (
-                  <td {...cell.getCellProps()} className="px-4 py-2 border">
-                    {cell.render("Cell")}
-                  </td>
-                );
+                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
               })}
             </tr>
           );

@@ -30,8 +30,8 @@ export const adminSidebarNavigation = [
     title: "Ecommerce Manager",
     children: [
       {
-        title: DashboardRoutesEnums.CATEGORY,
-        link: "/admin/dashboard/" + DashboardRoutesEnums.CATEGORY,
+        title: DashboardRoutesEnums.BRANDS,
+        link: "/admin/dashboard/" + DashboardRoutesEnums.BRANDS,
         Icon: SquaresPlusIcon,
       },
       {

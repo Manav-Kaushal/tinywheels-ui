@@ -1,4 +1,5 @@
 import SideLayout from "@components/Layouts/SideLayout";
+import BrandsView from "@src/sections/Dashboard/Brands";
 import ProductsView from "@src/sections/Dashboard/Products";
 import { DashboardRoutesEnums } from "@utils/enums/DashboardRoutesEnums";
 import { NextPageContext } from "next";
@@ -16,8 +17,8 @@ const Dashboard = ({ view }: Props) => {
         return "Overview";
       case DashboardRoutesEnums.USERS:
         return "Users";
-      case DashboardRoutesEnums.CATEGORY:
-        return "Category";
+      case DashboardRoutesEnums.BRANDS:
+        return <BrandsView />;
       case DashboardRoutesEnums.PRODUCTS:
         return <ProductsView />;
       default:

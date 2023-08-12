@@ -36,3 +36,31 @@ body {
 .link {
   @apply font-medium leading-6 cursor-pointer hover:text-primary-600 duration-200;
 }
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+  border-radius: 16px;
+}
+
+table th,
+table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ebebeb;
+}
+
+table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tr:hover {
+  background-color: #f2f2f2;
+}
