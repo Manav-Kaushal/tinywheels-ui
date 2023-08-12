@@ -5,7 +5,7 @@ import { useTable } from "react-table";
 interface TableProps {
   columns: any[];
   data: any[];
-  loading: boolean;
+  loading?: boolean;
 }
 
 const Table: React.FC<TableProps> = ({ columns, data, loading }) => {
