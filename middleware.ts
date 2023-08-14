@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
 
   const token = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   });
 
   const pathname = request.nextUrl.pathname;
