@@ -38,6 +38,7 @@ const Login = (props: Props) => {
       const signupResponse: any = await api.post("/auth/signup", body, {
         headers: { "Content-Type": "application/json" },
       });
+      console.log({ signupResponse });
 
       if (signupResponse.ok) {
         toast.success(
@@ -63,7 +64,7 @@ const Login = (props: Props) => {
         }
       } else {
         const errorMessage =
-          signupResponse?.data?.message[0] ||
+          signupResponse?.data?.message ||
           signupResponse?.message ||
           "Something went wrong!";
         toast.error(errorMessage);

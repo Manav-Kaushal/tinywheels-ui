@@ -30,7 +30,7 @@ export const authOptions = {
             return { ...response.data.user, token: response.data.token };
           } else {
             throw new Error(
-              "Invalid login credentials. Please check your email and password."
+              response?.data?.message || "Something wrong with next auth."
             );
           }
         } catch (error: any) {
