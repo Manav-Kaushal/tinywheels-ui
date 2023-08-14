@@ -1,6 +1,7 @@
 import SideLayout from "@components/Layouts/SideLayout";
 import BrandsView from "@src/sections/Dashboard/Brands";
 import ProductsView from "@src/sections/Dashboard/Products";
+import UsersView from "@src/sections/Dashboard/Users";
 import { DashboardRoutesEnums } from "@utils/enums/DashboardRoutesEnums";
 import { NextPageContext } from "next";
 import { useSession } from "next-auth/react";
@@ -17,7 +18,7 @@ const Dashboard = ({ view }: Props) => {
       case DashboardRoutesEnums.OVERVIEW:
         return "Overview";
       case DashboardRoutesEnums.USERS:
-        return "Users";
+        return <UsersView user={session?.user} />;
       case DashboardRoutesEnums.BRANDS:
         return <BrandsView user={session?.user} />;
       case DashboardRoutesEnums.PRODUCTS:
