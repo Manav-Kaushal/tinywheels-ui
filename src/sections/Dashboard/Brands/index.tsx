@@ -130,9 +130,16 @@ const BrandsView = ({ user }: Props) => {
     api
       .get("/brands")
       .then((res: any) => {
-        setBrandsList(res.data);
+        if (res.ok) {
+          setBrandsList(res.data);
+        } else {
+          toast.error("Failed to fetch!");
+        }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        toast.error("Something went wrong!");
+        console.log(err);
+      })
       .finally(() => {
         setFetchingBrandsList(false);
       });
@@ -171,7 +178,7 @@ const BrandsView = ({ user }: Props) => {
       <div className="flex items-center justify-between ">
         <div>
           <h4 className="font-medium text-primary-600">
-            Total: {brandsList.total}
+            Total: {brandsList?.total || 0}
           </h4>
         </div>
         <div className="flex items-center space-x-2">
