@@ -9,6 +9,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { appConfig } from "@utils/config";
+import { RolesEnum } from "@utils/enums/Roles";
 import { adminSidebarNavigation } from "@utils/mocks/adminSidebarNavigation";
 import classNames from "classnames";
 import { signIn, signOut } from "next-auth/react";
@@ -167,26 +168,22 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                     <div className="p-1">
                       {[
                         {
-                          id: 0,
+                          id: 1,
                           label: "Manage Website",
                           onClick: () => {
                             router.push(
                               adminSidebarNavigation[0].children[0].link
                             );
                           },
-                          isAdmin: true,
+                          allowedRoles: [
+                            RolesEnum.ADMIN,
+                            RolesEnum.DEVELOPER,
+                            RolesEnum.TEAM,
+                          ],
                           Icon: Cog6ToothIcon,
                         },
-                        // {
-                        //   id: 0,
-                        //   label: "My Account",
-                        //   onClick: () => {
-                        //     router.replace("/account");
-                        //   },
-                        //   isAdmin: true,
-                        // },
                         {
-                          id: 1,
+                          id: 2,
                           label: "Sign Out",
                           onClick: () => {
                             signOut({
@@ -194,12 +191,17 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                               callbackUrl: appConfig.websiteUrl,
                             });
                           },
-                          isAdmin: true,
+                          allowedRoles: [
+                            RolesEnum.ADMIN,
+                            RolesEnum.DEVELOPER,
+                            RolesEnum.TEAM,
+                            RolesEnum.CUSTOMER,
+                          ],
                           Icon: PowerIcon,
                         },
                       ].map(
                         (item) =>
-                          item.isAdmin === user.isAdmin && (
+                          item.allowedRoles.includes(user.role) && (
                             <Menu.Item key={item.id}>
                               {({ active }) => (
                                 <p
@@ -216,38 +218,6 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                             </Menu.Item>
                           )
                       )}
-                      {/* {user.isAdmin && (
-                        <Menu.Item>
-                          {({ active }) => (
-                            <span
-                              onClick={() =>
-                                router.push(
-                                  sidebarNavigation[0].children[0].path
-                                )
-                              }
-                              className={`${
-                                active ? "bg-gray-200 font-semibold pl-3" : ""
-                              } group flex w-full items-center rounded-md px-2 py-2 border-b cursor-pointer transition-all duration-200 ease-in-out text-gray-900`}
-                            >
-                              My Dashboard
-                            </span>
-                          )}
-                        </Menu.Item>
-                      )}
-                      <Menu.Item>
-                        {({ active }) => (
-                          <div
-                            onClick={() =>
-                              
-                            }
-                            className={`${
-                              active ? "bg-neutral-200 pl-3" : ""
-                            } group flex w-full items-center rounded-md px-2 py-2 cursor-pointer duration-200 text-gray-900`}
-                          >
-                            <PowerIcon className="w-4 h-4 mr-2" /> Logout
-                          </div>
-                        )}
-                      </Menu.Item> */}
                     </div>
                   </Menu.Items>
                 </Transition>
