@@ -30,11 +30,11 @@ const ProductsView = ({ user }: Props) => {
         accessor: (row: any) => {
           return (
             <Image
-              src={row.thumbnail}
-              alt={row.name}
-              width={100}
-              height={100}
-              className="object-contain w-24 border rounded-md aspect-1"
+              src={row.images[0]}
+              alt={row.title}
+              width={75}
+              height={75}
+              className="object-contain p-1 border rounded-md aspect-1"
             />
           );
         },
@@ -43,24 +43,28 @@ const ProductsView = ({ user }: Props) => {
         Header: "Name",
         accessor: (row: any) => {
           return (
-            <p className="duration-300 cursor-pointer line-clamp-1 hover:text-primary">
+            <p className="duration-300 cursor-pointer line-clamp-1 hover:text-primary-600">
               {row.title}
             </p>
           );
         },
       },
       {
+        Header: "Brand",
+        accessor: (row: any) => {
+          return <p>{row.brand.name}</p>;
+        },
+      },
+      {
         Header: "Price",
         accessor: (row: any) => {
-          return (
-            <p className="line-clamp-1">{formatCurrency(row.price || 0)}</p>
-          );
+          return <p>{formatCurrency(row.price || 0)}</p>;
         },
       },
       {
         Header: "Category",
         accessor: (row: any) => {
-          return <p className="line-clamp-1">{row.category.name}</p>;
+          return <p>{row.category}</p>;
         },
       },
       {
@@ -133,7 +137,7 @@ const ProductsView = ({ user }: Props) => {
 
   const fetchAllProducts = useCallback(() => {
     api
-      .get("/cars")
+      .get("/products?admin=true")
       .then((res: any) => {
         setProductsList((prev) => ({ ...prev, list: res.data }));
       })
@@ -157,7 +161,13 @@ const ProductsView = ({ user }: Props) => {
           </h4>
         </div>
         <div className="flex items-center space-x-2">
-          <Button label="Refresh" onClick={() => {}} size="sm" />
+          <Button
+            label="Refresh"
+            onClick={() => {
+              fetchAllProducts();
+            }}
+            size="sm"
+          />
           <Button label="Add" size="sm" />
         </div>
       </div>

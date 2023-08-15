@@ -21,7 +21,9 @@ const Table: React.FC<TableProps> = ({ columns, data, loading }) => {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th {...column.getHeaderProps()} className="font-medium">
+                {column.render("Header")}
+              </th>
             ))}
           </tr>
         ))}
