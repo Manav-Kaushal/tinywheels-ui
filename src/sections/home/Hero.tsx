@@ -1,12 +1,4 @@
 import Button from "@components/Button";
-import logoAudi from "@public/assets/brand-logos/audi.svg";
-import logoBmw from "@public/assets/brand-logos/bmw.svg";
-import logoFord from "@public/assets/brand-logos/ford.svg";
-import logoHonda from "@public/assets/brand-logos/honda.svg";
-import logoBenz from "@public/assets/brand-logos/mercedes-benz.svg";
-import logoPorsche from "@public/assets/brand-logos/porsche.svg";
-import logoToyota from "@public/assets/brand-logos/toyota.svg";
-import logoVW from "@public/assets/brand-logos/volkswagen.svg";
 import { appConfig, cloudinaryConfig } from "@utils/config";
 import classNames from "classnames";
 import { motion } from "framer-motion";
@@ -136,21 +128,51 @@ const Hero = () => {
             className="flex flex-wrap justify-center max-w-xl mx-auto mt-8 gap-x-6 gap-y-8 lg:mx-0 lg:justify-start"
           >
             {[
-              ["BMW", logoBmw],
-              ["Mercedes-Benz", logoBenz],
-              ["Ford", logoFord],
-              ["Toyota", logoToyota, "hidden xl:block"],
-              ["Volkswagen", logoVW],
-              ["Audi", logoAudi],
-              ["Porsche", logoPorsche],
-              ["Honda", logoHonda, "hidden xl:block"],
+              [
+                "BMW",
+                "https://res.cloudinary.com/tinywheels/image/upload/v1692048577/static/brands/bmw-logo_yxgmes.png",
+              ],
+              [
+                "Mercedes-Benz",
+                "https://res.cloudinary.com/tinywheels/image/upload/v1692048578/static/brands/mercedes-benz-logo_me4tq0.png",
+              ],
+              [
+                "Ford",
+                "https://res.cloudinary.com/tinywheels/image/upload/v1692048578/static/brands/ford-logo_tkardy.png",
+              ],
+              [
+                "Toyota",
+                "https://res.cloudinary.com/tinywheels/image/upload/v1692048578/static/brands/toyota-logo_qryh9i.png",
+                "hidden xl:block",
+              ],
+              [
+                "Volkswagen",
+                "https://res.cloudinary.com/tinywheels/image/upload/v1692048579/static/brands/Volkswagen-logo_bym1ra.png",
+              ],
+              [
+                "Audi",
+                "https://res.cloudinary.com/tinywheels/image/upload/v1692048578/static/brands/audi-logo_omaq9z.png",
+              ],
+              [
+                "Porsche",
+                "https://res.cloudinary.com/tinywheels/image/upload/v1692048578/static/brands/porsche-logo_wtbhs0.png",
+              ],
+              [
+                "Honda",
+                "https://res.cloudinary.com/tinywheels/image/upload/v1692048579/static/brands/honda-logo_qrphxa.png",
+                "hidden xl:block",
+              ],
             ].map(([name, logo, className]) => (
               <li key={name} className={classNames("flex", className)}>
-                <Image
-                  src={logo}
-                  alt={name}
-                  className="h-12 duration-200 hover:scale-125 grayscale hover:grayscale-0"
-                />
+                <div className="relative h-12 w-28">
+                  <Image
+                    src={logo}
+                    alt={name}
+                    className="object-contain duration-200 hover:scale-125"
+                    fill
+                    priority
+                  />
+                </div>
               </li>
             ))}
           </ul>
