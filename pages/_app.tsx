@@ -6,6 +6,7 @@ import { NextSeo } from "next-seo";
 import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import NextNProgress from "nextjs-progressbar";
 import { ReactElement, ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
@@ -31,6 +32,7 @@ function App({
       </Head>
       <Toaster />
       <NextSeo {...defaultSEO} />
+      <NextNProgress color="#0099cc" />
       <SessionProvider session={session}>
         {/* enableSystem is false,  default theme is light */}
         <ThemeProvider enableSystem={false}>

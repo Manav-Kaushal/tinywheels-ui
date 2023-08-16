@@ -3,26 +3,25 @@ import BrandsView from "@src/sections/Dashboard/Brands";
 import ProductsView from "@src/sections/Dashboard/Products";
 import UsersView from "@src/sections/Dashboard/Users";
 import { DashboardRoutesEnums } from "@utils/enums/DashboardRoutesEnums";
-import { NextPageContext } from "next";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]";
 
 type Props = {
   view: DashboardRoutesEnums;
+  user: any;
 };
 
-const Dashboard = ({ view }: Props) => {
-  const { data: session } = useSession();
-
+const Dashboard = ({ view, user }: Props) => {
   const getRenderView = () => {
     switch (view) {
       case DashboardRoutesEnums.OVERVIEW:
         return "Overview";
       case DashboardRoutesEnums.USERS:
-        return <UsersView user={session?.user} />;
+        return <UsersView user={user} />;
       case DashboardRoutesEnums.BRANDS:
-        return <BrandsView user={session?.user} />;
+        return <BrandsView user={user} />;
       case DashboardRoutesEnums.PRODUCTS:
-        return <ProductsView user={session?.user} />;
+        return <ProductsView user={user} />;
       default:
         return "Please select from left";
     }
@@ -33,10 +32,18 @@ const Dashboard = ({ view }: Props) => {
 
 Dashboard.Layout = SideLayout;
 
-Dashboard.getInitialProps = async (ctx: NextPageContext) => {
+export async function getServerSideProps(ctx: {
+  req?: any;
+  res?: any;
+  query?: any;
+}) {
   const { query } = ctx;
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
-  return { view: query.view };
-};
+  if (session?.user) {
+    return { props: { view: query.view, user: session.user } };
+  }
+  return { props: { notFound: true } };
+}
 
 export default Dashboard;
