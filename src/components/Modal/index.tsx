@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import classNames from "classnames";
 import { Fragment, ReactNode } from "react";
 
 interface ModalProps {
@@ -7,9 +8,30 @@ interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   title: string;
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
-const Modal: React.FC<ModalProps> = ({ open, onClose, title, children }) => {
+const sizeClasses = {
+  sm: "sm:max-w-md",
+  md: "sm:max-w-xl",
+  lg: "sm:max-w-3xl",
+  xl: "sm:max-w-5xl",
+};
+
+const Modal: React.FC<ModalProps> = ({
+  open,
+  onClose,
+  title,
+  children,
+  size = "md",
+}) => {
+  const sizeClass = sizeClasses[size] || "sm:max-w-md";
+
+  const containerClasses = classNames(
+    "inline-block text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:w-full",
+    sizeClass
+  );
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -46,7 +68,7 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, title, children }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className={containerClasses}>
               <div className="mt-3 sm:mt-0 sm:text-left">
                 <Dialog.Title className="flex items-center justify-between p-4 text-lg font-medium leading-6 text-gray-900 border-b sm:px-6">
                   <span className="capitalize">{title}</span>

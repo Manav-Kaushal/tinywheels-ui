@@ -52,7 +52,7 @@ const SideLayout = ({ children }: Props) => {
       </div>
       <div className="relative -mt-32 global-container">
         <div className="grid grid-cols-10 gap-8 h-full min-h-[80vh] max-h-[80vh]">
-          <aside className="col-span-2">
+          <aside className="sticky col-span-2 h-fit top-10">
             <div className="h-full p-2 bg-white rounded-lg shadow-lg">
               <nav>{renderMenuItems(adminSidebarNavigation)}</nav>
             </div>

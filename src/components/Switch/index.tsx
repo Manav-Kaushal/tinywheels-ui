@@ -3,11 +3,17 @@ import { useEffect } from "react";
 
 type SwitchProps = {
   name: string;
+  label: string;
   defaultChecked?: boolean;
   disabled?: boolean;
 };
 
-const Switch = ({ name, defaultChecked = false, disabled }: SwitchProps) => {
+const Switch = ({
+  name,
+  label,
+  defaultChecked = false,
+  disabled,
+}: SwitchProps) => {
   const [field, meta, helpers] = useField(name);
 
   useEffect(() => {
@@ -26,37 +32,40 @@ const Switch = ({ name, defaultChecked = false, disabled }: SwitchProps) => {
   };
 
   return (
-    <label
-      className={`relative w-10 h-6 cursor-pointer ${
-        disabled ? "opacity-50" : ""
-      }`}
-    >
-      <input
-        type="checkbox"
-        {...field}
-        onChange={handleToggle}
-        onBlur={() => helpers.setTouched(true)}
-        disabled={disabled}
-        checked={field.value}
-        className="hidden"
-      />
-      <div
-        className={`w-10 h-6 flex items-center px-3 rounded-full ${
-          field.value
-            ? "justify-end bg-primary-500"
-            : "justify-start bg-gray-200"
+    <div className="flex items-center space-x-2">
+      <p className="text-gray-800">{label}</p>
+      <label
+        className={`relative w-10 h-6 cursor-pointer ${
+          disabled ? "opacity-50" : ""
         }`}
       >
-        <div
-          className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
-            field.value ? "translate-x-2" : "-translate-x-2"
-          }`}
+        <input
+          type="checkbox"
+          {...field}
+          onChange={handleToggle}
+          onBlur={() => helpers.setTouched(true)}
+          disabled={disabled}
+          checked={field.value}
+          className="hidden"
         />
-      </div>
-      {meta.touched && meta.error && (
-        <div className="mt-1 text-sm text-red-500">{meta.error}</div>
-      )}
-    </label>
+        <div
+          className={`w-10 h-6 flex items-center px-3 rounded-full ${
+            field.value
+              ? "justify-end bg-primary-500"
+              : "justify-start bg-gray-200"
+          }`}
+        >
+          <div
+            className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
+              field.value ? "translate-x-2" : "-translate-x-2"
+            }`}
+          />
+        </div>
+        {meta.touched && meta.error && (
+          <div className="mt-1 text-sm text-red-500">{meta.error}</div>
+        )}
+      </label>
+    </div>
   );
 };
 

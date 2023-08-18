@@ -1,19 +1,24 @@
 import Button from "@components/Button";
 import Table from "@components/Table";
 import {
+  ArrowLeftIcon,
   CheckCircleIcon,
   PencilSquareIcon,
   TrashIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import api from "@utils/api";
+import { ProductViews } from "@utils/enums/Product";
 import { formatCurrency } from "@utils/helpers";
+import useQuery from "@utils/hooks/useQuery";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import AddProductForm from "./AddProductForm";
 
 type Props = { user: any };
 
 const ProductsView = ({ user }: Props) => {
+  const [query, updateQuery, removeQuery] = useQuery();
   const [fetchingProductsList, setFetchingProductsList] = useState(false);
   const [productsList, setProductsList] = useState<{
     list: any[];
@@ -22,6 +27,21 @@ const ProductsView = ({ user }: Props) => {
     list: [],
     total: 0,
   });
+  const [view, setView] = useState(ProductViews.LIST);
+
+  const toggleAddProductModal = (
+    value: ProductViews,
+    callback?: () => void
+  ) => {
+    try {
+      setView(value);
+      if (callback) {
+        callback();
+      }
+    } catch (error) {
+      console.error("Error toggling view for products:", error);
+    }
+  };
 
   const columns: any = useMemo(
     () => [
@@ -152,12 +172,35 @@ const ProductsView = ({ user }: Props) => {
     fetchAllProducts();
   }, []);
 
+  // Conditionally render components based on the query parameters
+  const renderComponent = () => {
+    if (query.newEntry) {
+      return (
+        <AddProductForm
+          token={user?.token}
+          fetchAllProducts={fetchAllProducts}
+        />
+      );
+    } else {
+      return <Table columns={columns} data={productsList?.list || []} />;
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between ">
         <div>
           <h4 className="font-semibold text-primary/50">
             {/* Total Categories: {total} */}
+            {query?.newEntry && (
+              <div
+                className="flex items-center space-x-2 font-normal duration-200 cursor-pointer hover:text-primary-600"
+                onClick={() => removeQuery("newEntry")}
+              >
+                <ArrowLeftIcon className="w-4 h-4 mr" />
+                <p>Back</p>
+              </div>
+            )}
           </h4>
         </div>
         <div className="flex items-center space-x-2">
@@ -168,27 +211,17 @@ const ProductsView = ({ user }: Props) => {
             }}
             size="sm"
           />
-          <Button label="Add" size="sm" />
+          <Button
+            label="Add"
+            size="sm"
+            onClick={() => updateQuery({ newEntry: "true" })}
+          />
         </div>
       </div>
 
-      {/* Data Table */}
-      <div className="mt-6">
-        <Table columns={columns} data={productsList?.list || []} />
-      </div>
+      <div className="mt-6">{renderComponent()}</div>
 
       {/* <Drawer
-        title="Add product"
-        open={addProductPanel}
-        size="lg"
-        onClose={() => hideAddProductPanel()}
-      >
-        <AddProductForm
-          hideAddProductPanel={hideAddProductPanel}
-          fetchAllProducts={fetchAllProducts}
-        />
-      </Drawer>
-      <Drawer
         title="Product Details"
         open={detailsPanelVisible}
         size="lg"
