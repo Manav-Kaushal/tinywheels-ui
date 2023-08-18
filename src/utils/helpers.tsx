@@ -30,3 +30,13 @@ export function createURLFromFile(file: File) {
 
   return URL.createObjectURL(file);
 }
+
+export function slugifyProductName(productName: string) {
+  const slug = productName
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
+
+  return slug;
+}

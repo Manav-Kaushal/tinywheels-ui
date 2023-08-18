@@ -14,9 +14,16 @@ interface SelectProps {
   label: string;
   options: Option[];
   required?: boolean;
+  containerClassName?: string;
 }
 
-const Select: React.FC<SelectProps> = ({ name, label, options, required }) => {
+const Select: React.FC<SelectProps> = ({
+  name,
+  label,
+  options,
+  required,
+  containerClassName,
+}) => {
   const [field, meta, helpers] = useField(name);
 
   const [selected, setSelected] = useState<Option | null>(null);
@@ -33,10 +40,10 @@ const Select: React.FC<SelectProps> = ({ name, label, options, required }) => {
   }, [options]);
 
   return (
-    <div className="relative mt-1">
+    <div className={classNames("relative select-none", containerClassName)}>
       <Listbox value={selected} onChange={handleSelect}>
         {({ open }) => (
-          <div className="relative mt-2">
+          <div className="relative">
             <Listbox.Button className="relative block w-full px-3 py-3 text-gray-600 duration-200 border border-gray-300 rounded-md outline-none appearance-none focus:border-primary/50 focus:outline-none">
               <span className="block text-left truncate">
                 {selected?.label}

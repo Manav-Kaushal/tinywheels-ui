@@ -8,7 +8,6 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import api from "@utils/api";
-import { ProductViews } from "@utils/enums/Product";
 import { formatCurrency } from "@utils/helpers";
 import useQuery from "@utils/hooks/useQuery";
 import Image from "next/image";
@@ -27,21 +26,6 @@ const ProductsView = ({ user }: Props) => {
     list: [],
     total: 0,
   });
-  const [view, setView] = useState(ProductViews.LIST);
-
-  const toggleAddProductModal = (
-    value: ProductViews,
-    callback?: () => void
-  ) => {
-    try {
-      setView(value);
-      if (callback) {
-        callback();
-      }
-    } catch (error) {
-      console.error("Error toggling view for products:", error);
-    }
-  };
 
   const columns: any = useMemo(
     () => [
@@ -188,35 +172,36 @@ const ProductsView = ({ user }: Props) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between ">
-        <div>
-          <h4 className="font-semibold text-primary/50">
-            {/* Total Categories: {total} */}
-            {query?.newEntry && (
-              <div
-                className="flex items-center space-x-2 font-normal duration-200 cursor-pointer hover:text-primary-600"
-                onClick={() => removeQuery("newEntry")}
-              >
-                <ArrowLeftIcon className="w-4 h-4 mr" />
-                <p>Back</p>
-              </div>
-            )}
-          </h4>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            label="Refresh"
-            onClick={() => {
-              fetchAllProducts();
-            }}
-            size="sm"
-          />
-          <Button
-            label="Add"
-            size="sm"
-            onClick={() => updateQuery({ newEntry: "true" })}
-          />
-        </div>
+      <div className="flex items-center justify-between">
+        {query?.newEntry ? (
+          <div>
+            <h4
+              className="flex items-center space-x-2 font-normal duration-200 cursor-pointer hover:text-primary-600"
+              onClick={() => removeQuery("newEntry")}
+            >
+              <ArrowLeftIcon className="w-4 h-4 mr" />
+              <p>Back</p>
+            </h4>
+          </div>
+        ) : (
+          <>
+            <div />
+            <div className="flex items-center space-x-2">
+              <Button
+                label="Refresh"
+                onClick={() => {
+                  fetchAllProducts();
+                }}
+                size="sm"
+              />
+              <Button
+                label="Add"
+                size="sm"
+                onClick={() => updateQuery({ newEntry: "true" })}
+              />
+            </div>
+          </>
+        )}
       </div>
 
       <div className="mt-6">{renderComponent()}</div>

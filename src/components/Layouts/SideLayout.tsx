@@ -27,7 +27,7 @@ const SideLayout = ({ children }: Props) => {
                     onClick={() => router.push(child.link)}
                     className={classNames(
                       "flex items-center space-x-2 p-3 capitalize cursor-pointer duration-300 rounded-md ",
-                      router.asPath === child.link
+                      router.asPath.includes(child.link)
                         ? "pl-6 bg-primary-700 shadow text-white"
                         : "hover:bg-silver-200 hover:pl-6"
                     )}
