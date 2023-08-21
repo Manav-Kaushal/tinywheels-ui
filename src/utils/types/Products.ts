@@ -11,10 +11,11 @@ export type CreateProductTypes = {
   body: string;
   category: ProductCategory;
   brand: string;
-  modelNumber: string;
+  sku: string;
   scale: ProductScales;
   material: string;
   color: string;
+  additionalColors: string;
   price: number;
   currency: ProductCurrency;
   stockQuantity: number;
@@ -28,8 +29,13 @@ export type CreateProductTypes = {
     value: number;
     unit: string;
   };
-  tags: string[];
+  tags: string;
   isFeatured: boolean;
+  meta: {
+    title: string;
+    description: string;
+    keywords: string;
+  };
 };
 
 export type ProductCategoryOption = {

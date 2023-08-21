@@ -6,11 +6,12 @@ import { ReactNode } from "react";
 type AccordionProps = {
   title: string;
   children: ReactNode;
+  defaultOpen?: boolean;
 };
 
-const Accordion = ({ title, children }: AccordionProps) => {
+const Accordion = ({ title, children, defaultOpen }: AccordionProps) => {
   return (
-    <Disclosure>
+    <Disclosure defaultOpen={defaultOpen}>
       {({ open }) => (
         <>
           <Disclosure.Button className="flex items-center justify-between w-full p-3 text-left rounded-md bg-primary-100/40">

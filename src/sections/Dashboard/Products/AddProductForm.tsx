@@ -1,4 +1,5 @@
 import Accordion from "@components/Accordion";
+import Button from "@components/Button";
 import Divider from "@components/Divider";
 import Input from "@components/Forms/Input";
 import Select from "@components/Forms/Select";
@@ -29,10 +30,11 @@ const initialValues: CreateProductTypes = {
   body: "",
   category: ProductCategory.SEDAN,
   brand: "",
-  modelNumber: "",
+  sku: "",
   scale: ProductScales.ONETOTWELVE,
   material: "",
   color: "",
+  additionalColors: "",
   price: 0,
   currency: ProductCurrency.INDIANRUPEE,
   stockQuantity: 50,
@@ -46,13 +48,16 @@ const initialValues: CreateProductTypes = {
     value: 0,
     unit: "g",
   },
-  tags: [],
+  tags: "",
   isFeatured: false,
+  meta: {
+    title: "",
+    description: "",
+    keywords: "",
+  },
 };
 
 const AddProductForm = ({ token, fetchAllProducts }: Props) => {
-  const handleCreateProduct = (values: CreateProductTypes) => {};
-
   // Convert enum to category object
   const productCategoryOptions: ProductCategoryOption[] = Object.keys(
     ProductCategory
@@ -77,6 +82,10 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
     label: ProductCurrency[key as keyof typeof ProductCurrency],
   }));
 
+  const handleCreateProduct = (values: CreateProductTypes) => {
+    console.log(values);
+  };
+
   return (
     <div className="mt-6">
       <Formik
@@ -86,9 +95,9 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
         }}
         enableReinitialize
       >
-        {({ values, setFieldValue }) => (
+        {({ values, setFieldValue, resetForm }) => (
           <Form className="space-y-2" autoComplete="off">
-            <Accordion title="Product Details">
+            <Accordion title="Product Details" defaultOpen>
               <div className="grid grid-cols-12 gap-6">
                 <Input
                   name="title"
@@ -119,6 +128,15 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
                   rows={5}
                   containerClassName="col-span-12"
                 />
+                <Input
+                  name="tags"
+                  label="Tags"
+                  containerClassName="col-span-5"
+                />
+                <Input name="sku" label="SKU" containerClassName="col-span-5" />
+                <div className="col-span-5">
+                  <Switch name="isFeatured" label="Is Featured?" />
+                </div>
                 <Divider label="Properties" sx="col-span-12 my-4" />
                 <Input
                   name="price"
@@ -160,6 +178,11 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
                   label="Color"
                   containerClassName="col-span-3"
                 />
+                <Input
+                  name="additionalColors"
+                  label="Additional Colors"
+                  containerClassName="col-span-3"
+                />
                 <Divider label="Dimensions" sx="col-span-12 my-4" />
                 <Input
                   name="dimensions[length]"
@@ -194,13 +217,42 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
               </div>
             </Accordion>
 
-            <Accordion title="Meta Information">Meta Information</Accordion>
+            <Accordion title="Meta Information">
+              <div className="grid grid-cols-12 gap-6">
+                <Input
+                  name="meta[title]"
+                  label="Meta Title"
+                  containerClassName="col-span-6"
+                  maxLength={60}
+                />
+                <Input
+                  name="meta[keywords]"
+                  label="Meta Keywords"
+                  containerClassName="col-span-6"
+                  maxLength={60}
+                />
+                <Input
+                  name="meta[description]"
+                  label="Meta Description"
+                  rows={2}
+                  containerClassName="col-span-12"
+                  maxLength={160}
+                />
+              </div>
+            </Accordion>
 
             <Accordion title="Images">
               <div className="grid grid-cols-12 gap-6">Images</div>
             </Accordion>
 
-            <Switch name="isFeatured" label="Is Featured?" />
+            <div className="flex items-center justify-end space-x-2">
+              <Button
+                label="Reset"
+                variant="danger"
+                onClick={() => resetForm()}
+              />
+              <Button label="Create Product" />
+            </div>
           </Form>
         )}
       </Formik>

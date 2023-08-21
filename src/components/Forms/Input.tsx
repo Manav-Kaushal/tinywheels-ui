@@ -44,7 +44,6 @@ const Input: React.FC<InputFieldProps> = ({
   ...rest
 }: InputFieldProps) => {
   const isTextarea = rest.hasOwnProperty("rows"); // Check if it's a textarea
-  const showCharacterCount = rest.hasOwnProperty("showCharacterCount");
 
   const [field, meta] = useField(name);
   const [isFocused, setIsFocused] = useState(false);
@@ -97,6 +96,8 @@ const Input: React.FC<InputFieldProps> = ({
     iconClassName
   );
 
+  const charCountClasses = "absolute text-xs text-neutral-400 bottom-1 right-2";
+
   useEffect(() => {
     if (rest.value) {
       setIsFocused(true);
@@ -123,8 +124,8 @@ const Input: React.FC<InputFieldProps> = ({
             <label htmlFor={name} className={labelClasses}>
               {label}
             </label>
-            {showCharacterCount && (
-              <span className="absolute text-neutral-400 bottom-1 right-3">
+            {rest.maxLength && (
+              <span className={charCountClasses}>
                 {field.value.length}/{rest.maxLength || 500}
               </span>
             )}
@@ -151,6 +152,7 @@ const Input: React.FC<InputFieldProps> = ({
                   e.target.blur();
                 }
               }}
+              maxLength={rest.maxLength || 500}
             />
             {type === "password" ? (
               <div className={iconClasses}>
@@ -172,6 +174,11 @@ const Input: React.FC<InputFieldProps> = ({
             <label htmlFor={name} className={labelClasses}>
               {label}
             </label>
+            {rest.maxLength && (
+              <span className={charCountClasses}>
+                {field.value.length}/{rest.maxLength || 500}
+              </span>
+            )}
           </>
         )}
       </div>

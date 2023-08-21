@@ -12,7 +12,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Variants = {
   primary: "bg-primary-600 hover:bg-primary-600/80 focus:ring-primary-500",
-  danger: "bg-primary-500 hover:bg-primary-500/80 focus:ring-secondary-500",
+  danger: "bg-red-500 hover:bg-red-500/80 focus:ring-secondary-500",
   success: "bg-emerald-500 hover:bg-emerald-500/80 focus:ring-emerald-500",
   black: "bg-black hover:bg-black/80",
 };
@@ -26,7 +26,6 @@ const Sizes = {
 
 const Button: React.FC<ButtonProps> = ({
   sx = "",
-  onClick,
   label,
   Icon,
   variant = "primary",
@@ -46,7 +45,6 @@ const Button: React.FC<ButtonProps> = ({
         center ? "mx-auto w-fit" : "",
         sx
       )}
-      onClick={onClick}
       {...props}
     >
       {Icon && <Icon className="w-5 h-5" />}
