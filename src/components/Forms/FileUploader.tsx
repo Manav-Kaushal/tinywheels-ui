@@ -1,4 +1,5 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import classNames from "classnames";
 import { useField } from "formik";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -8,9 +9,16 @@ interface FileUploaderProps
   name: string;
   label: string;
   imgSrc?: string;
+  containerClassname?: string;
 }
 
-const FileUploader = ({ name, label, imgSrc, ...rest }: FileUploaderProps) => {
+const FileUploader = ({
+  name,
+  label,
+  imgSrc,
+  containerClassname,
+  ...rest
+}: FileUploaderProps) => {
   const [field, meta, helpers] = useField(name);
   const [src, setSrc] = useState<string | File | null>(null);
 
@@ -39,7 +47,7 @@ const FileUploader = ({ name, label, imgSrc, ...rest }: FileUploaderProps) => {
   }, [imgSrc]);
 
   return (
-    <div>
+    <div className={classNames(containerClassname)}>
       <label htmlFor={name} className="cursor-pointer">
         <input
           type="file"

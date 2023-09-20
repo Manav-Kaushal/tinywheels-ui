@@ -1,11 +1,11 @@
-export const formatCurrency = (number: number) => {
+export function formatCurrency(number: number) {
   const formatter = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
   });
 
   return formatter.format(number);
-};
+}
 
 export function trimID(id: string) {
   if (typeof id !== "string") {
@@ -40,3 +40,36 @@ export function slugifyProductName(productName: string) {
 
   return slug;
 }
+
+const isObject = (value: any): boolean => {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+};
+
+const buildFormData = (formData: FormData, data: any, keyPrefix = ""): void => {
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      const currentKey = keyPrefix ? `${keyPrefix}[${key}]` : key;
+      const value = data[key];
+
+      if (Array.isArray(value)) {
+        value.forEach((item: any, index: number) => {
+          if (item instanceof File) {
+            formData.append(currentKey, item);
+          } else {
+            buildFormData(formData, item, `${currentKey}[${index}]`);
+          }
+        });
+      } else if (isObject(value)) {
+        buildFormData(formData, value, currentKey);
+      } else {
+        formData.append(currentKey, value);
+      }
+    }
+  }
+};
+
+export const convertObjectToFormData = (data: any): FormData => {
+  const formData = new FormData();
+  buildFormData(formData, data);
+  return formData;
+};

@@ -1,6 +1,7 @@
 import Accordion from "@components/Accordion";
 import Button from "@components/Button";
 import Divider from "@components/Divider";
+import FileUploader from "@components/Forms/FileUploader";
 import Input from "@components/Forms/Input";
 import Select from "@components/Forms/Select";
 import Switch from "@components/Switch";
@@ -9,7 +10,8 @@ import {
   ProductCurrency,
   ProductScales,
 } from "@utils/enums/Product";
-import { slugifyProductName } from "@utils/helpers";
+import { convertObjectToFormData, slugifyProductName } from "@utils/helpers";
+import api from "@utils/api";
 import {
   CreateProductTypes,
   ProductCategoryOption,
@@ -23,13 +25,36 @@ type Props = {
   fetchAllProducts: () => void;
 };
 
+const brandOptions = [
+  {
+    value: "64d6b8f8070005ab266b9620",
+    label: "BMW",
+  },
+  {
+    value: "64d6efa62375d104945dbe35",
+    label: "Audi",
+  },
+  {
+    value: "64d6f8f62375d104945dbe3c",
+    label: "Honda",
+  },
+  {
+    value: "64d6fcabee29d44731aa1a3e",
+    label: "Ford",
+  },
+  {
+    value: "64d7f53a7d708e3d111f9bb7",
+    label: "Volvo",
+  },
+];
+
 const initialValues: CreateProductTypes = {
   title: "",
   slug: "",
   description: "",
   body: "",
   category: ProductCategory.SEDAN,
-  brand: "",
+  brand: brandOptions[0].value,
   sku: "",
   scale: ProductScales.ONETOTWELVE,
   material: "",
@@ -82,8 +107,23 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
     label: ProductCurrency[key as keyof typeof ProductCurrency],
   }));
 
-  const handleCreateProduct = (values: CreateProductTypes) => {
-    console.log(values);
+  const handleCreateProduct = async (values: CreateProductTypes) => {
+    const { images, ...rest }: any = values;
+
+    const formData = convertObjectToFormData(rest);
+
+    formData.append("images", images);
+
+    try {
+      const response = await api.post("/products/new", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      if (response.ok) {
+        console.log({ response });
+      }
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   return (
@@ -128,13 +168,19 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
                   rows={5}
                   containerClassName="col-span-12"
                 />
+                <Select
+                  name="brand"
+                  label="Brand"
+                  options={brandOptions}
+                  containerClassName="col-span-3"
+                />
                 <Input
                   name="tags"
                   label="Tags"
-                  containerClassName="col-span-5"
+                  containerClassName="col-span-3"
                 />
-                <Input name="sku" label="SKU" containerClassName="col-span-5" />
-                <div className="col-span-5">
+                <Input name="sku" label="SKU" containerClassName="col-span-3" />
+                <div className="col-span-3">
                   <Switch name="isFeatured" label="Is Featured?" />
                 </div>
                 <Divider label="Properties" sx="col-span-12 my-4" />
@@ -242,7 +288,13 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
             </Accordion>
 
             <Accordion title="Images">
-              <div className="grid grid-cols-12 gap-6">Images</div>
+              <div className="grid grid-cols-12 gap-6">
+                <FileUploader
+                  name="images"
+                  label="Upload Images"
+                  containerClassname="col-span-12"
+                />
+              </div>
             </Accordion>
 
             <div className="flex items-center justify-end space-x-2">
