@@ -1,5 +1,4 @@
-import api from "@utils/api";
-import { getLoginUrl } from "@utils/endPoints";
+import { api } from "@src/services/api";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -18,30 +17,15 @@ export const authOptions = {
           password: credentials!.password,
         };
         try {
-          const response: any = await api.post(
-            getLoginUrl(),
-            JSON.stringify(payload),
-            {
-              withCredentials: true,
-              headers: { "Content-Type": "application/json" },
-            }
-          );
-          if (response.ok) {
-            return { ...response.data.user, token: response.data.token };
+          const res: any = await api.login(JSON.stringify(payload));
+          if (res.kind === "ok") {
+            return { ...res.data.user, token: res.data.token };
           } else {
             throw new Error(
-              response?.data?.message || "Something wrong with next auth."
+              res?.data?.message || "Something wrong with next auth."
             );
           }
-        } catch (error: any) {
-          let errorMessage = "An error occurred while processing your request.";
-
-          if (error?.message) {
-            errorMessage = error?.message;
-          }
-
-          throw new Error(errorMessage);
-        }
+        } catch (error: any) {}
       },
     }),
   ],

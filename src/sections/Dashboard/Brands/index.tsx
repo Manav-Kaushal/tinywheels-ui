@@ -4,9 +4,9 @@ import Drawer from "@components/Drawer";
 import Modal from "@components/Modal";
 import Table from "@components/Table";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import api from "@utils/api";
+import { api } from "@src/services/api";
 import { trimID } from "@utils/helpers";
-import { BrandType } from "@utils/types/Brand";
+import { Brand, Overlay, StateType } from "@utils/types/Brands";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -21,35 +21,55 @@ type Props = {
 const BrandsView = ({ user }: Props) => {
   const [fetchingBrandsList, setFetchingBrandsList] = useState<boolean>(false);
   const [deletingBrand, setDeletingBrand] = useState<boolean>(false);
-  const [brandsList, setBrandsList] = useState<{
-    list: BrandType[];
-    total: number;
-  }>({ list: [], total: 0 });
-  const [brandToEditId, setBrandToEditId] = useState<string>("");
+  const [brandsList, setBrandsList] = useState({
+    list: [],
+    total: 0,
+  });
+  const [brandToEdit, setBrandToEdit] = useState<Brand | null>(null);
 
   // Modals & Drawers
-  const [addBrandModal, setAddBrandModal] = useState(false);
-  const [editBrandDrawer, setEditBrandDrawer] = useState(false);
+  const [state, setState] = useState<StateType>({
+    modal: false,
+    drawer: false,
+  });
 
-  const toggleAddBrandModal = (value: boolean, callback?: () => void) => {
-    try {
-      setAddBrandModal(value);
-      if (callback) {
-        callback();
-      }
-    } catch (error) {
-      console.error("Error toggling add brand modal:", error);
+  const toggle = useCallback((type: Overlay, callback?: () => void) => {
+    setState((prev) => ({ ...prev, [type]: !prev[type] }));
+    if (callback) {
+      callback();
     }
-  };
+  }, []);
 
-  const toggleEditBrandDrawer = (value: boolean, callback?: () => void) => {
+  const fetchBrands = useCallback(async () => {
+    setFetchingBrandsList(true);
     try {
-      setEditBrandDrawer(value);
-      if (callback) {
-        callback();
+      const res = await api.getAllBrands();
+      if (res.kind === "ok") {
+        setBrandsList(res?.data);
+      } else {
+        throw new Error("Failed to fetch brands");
       }
-    } catch (error) {
-      console.error("Error toggling edit brand drawer:", error);
+    } catch (error: any) {
+      toast.error(error?.message);
+    } finally {
+      setFetchingBrandsList(false);
+    }
+  }, []);
+
+  const deleteBrand = async (id: string) => {
+    setDeletingBrand(true);
+    try {
+      const res = await api.deleteBrand(id);
+      if (res.kind === "ok") {
+        toast.success("Brand deleted");
+        fetchBrands();
+      } else {
+        throw new Error("Failed to fetch brands");
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    } finally {
+      setDeletingBrand(false);
     }
   };
 
@@ -57,7 +77,7 @@ const BrandsView = ({ user }: Props) => {
     () => [
       {
         Header: "Logo",
-        accessor: (row: BrandType) => {
+        accessor: (row: Brand) => {
           return (
             <div className="relative w-12 aspect-square">
               <Image
@@ -72,13 +92,13 @@ const BrandsView = ({ user }: Props) => {
       },
       {
         Header: "Name",
-        accessor: (row: BrandType) => {
+        accessor: (row: Brand) => {
           return <p className="line-clamp-1">{row.name}</p>;
         },
       },
       {
         Header: "ID",
-        accessor: (row: BrandType) => {
+        accessor: (row: Brand) => {
           return (
             <div>
               <span>{trimID(row._id)}</span>
@@ -89,13 +109,13 @@ const BrandsView = ({ user }: Props) => {
       },
       {
         Header: "Country",
-        accessor: (row: BrandType) => {
+        accessor: (row: Brand) => {
           return <p className="line-clamp-1">{row.country}</p>;
         },
       },
       {
         Header: "Year Founded",
-        accessor: (row: BrandType) => {
+        accessor: (row: Brand) => {
           return <p>{dayjs(row.yearFounded).format("MMM DD, YYYY")}</p>;
         },
       },
@@ -106,16 +126,15 @@ const BrandsView = ({ user }: Props) => {
             <div className="flex items-center space-x-2 text-sm cursor-default">
               <PencilSquareIcon
                 className="w-5 h-5 duration-200 cursor-pointer text-primary-600/50 hover:text-primary-600"
-                onClick={() =>
-                  toggleEditBrandDrawer(true, () => {
-                    setBrandToEditId(row._id);
-                  })
-                }
+                onClick={() => {
+                  setBrandToEdit(row);
+                  toggle("drawer");
+                }}
               />
               <span className="text-gray-500">|</span>
               <TrashIcon
                 className="w-5 h-5 duration-200 cursor-pointer text-red-500/50 hover:text-red-500"
-                onClick={() => handleBrandDelete(row._id)}
+                onClick={() => deleteBrand(row._id)}
               />
             </div>
           );
@@ -125,52 +144,8 @@ const BrandsView = ({ user }: Props) => {
     []
   );
 
-  const fetchAllBrands = useCallback(() => {
-    setFetchingBrandsList(true);
-    api
-      .get("/brands")
-      .then((res: any) => {
-        if (res.ok) {
-          setBrandsList(res.data);
-        } else {
-          toast.error("Failed to fetch!");
-        }
-      })
-      .catch((err) => {
-        toast.error("Something went wrong!");
-        console.log(err);
-      })
-      .finally(() => {
-        setFetchingBrandsList(false);
-      });
-  }, []);
-
-  const handleBrandDelete = async (id: string) => {
-    setDeletingBrand(true);
-
-    try {
-      const response: any = await api.delete("/brands/" + id);
-
-      if (response.ok) {
-        toast.success("Brand deleted successfully!");
-        fetchAllBrands();
-      } else {
-        const errorMessage = response?.data?.message || "Something went wrong";
-        toast.error(`Brand could not be deleted! Error: ${errorMessage}`);
-        console.error("Brand deletion error:", errorMessage);
-      }
-    } catch (error) {
-      toast.error(
-        "An error occurred while deleting the brand. Check console for more details."
-      );
-      console.error("Error deleting brand:", error);
-    } finally {
-      setDeletingBrand(false);
-    }
-  };
-
   useEffect(() => {
-    fetchAllBrands();
+    fetchBrands();
   }, []);
 
   return (
@@ -182,12 +157,12 @@ const BrandsView = ({ user }: Props) => {
           </h4>
         </div>
         <div className="flex items-center space-x-2">
-          <Button label="Refresh" onClick={() => fetchAllBrands()} size="sm" />
+          <Button label="Refresh" onClick={() => fetchBrands()} size="sm" />
           <Button
             label="Add"
             size="sm"
             onClick={() => {
-              toggleAddBrandModal(true);
+              toggle("modal");
             }}
           />
         </div>
@@ -204,39 +179,34 @@ const BrandsView = ({ user }: Props) => {
       {/* Add Brand */}
       <Modal
         title="Add brand"
-        open={addBrandModal}
-        onClose={() => toggleAddBrandModal(false)}
+        open={state.modal}
+        onClose={() => toggle("modal")}
       >
-        <AddBrandForm
-          token={user?.token}
-          toggleAddBrandModal={toggleAddBrandModal}
-          fetchAllBrands={fetchAllBrands}
-        />
+        <AddBrandForm toggle={toggle} fetchBrands={fetchBrands} />
       </Modal>
 
       {/* Edit Brand */}
       <Drawer
         title="Edit Brand Details"
-        open={editBrandDrawer}
+        open={state.drawer}
         size="lg"
         onClose={() =>
-          toggleEditBrandDrawer(false, () => {
+          toggle("drawer", () => {
             setTimeout(() => {
-              setBrandToEditId("");
+              setBrandToEdit(null);
             }, 500);
           })
         }
       >
         <EditBrandForm
-          token={user?.token}
-          id={brandToEditId || ""}
+          brandToEdit={brandToEdit}
           callback={() => {
-            toggleEditBrandDrawer(false, () => {
+            toggle("drawer", () => {
               setTimeout(() => {
-                setBrandToEditId("");
+                setBrandToEdit(null);
               }, 500);
             });
-            fetchAllBrands();
+            fetchBrands();
           }}
         />
       </Drawer>

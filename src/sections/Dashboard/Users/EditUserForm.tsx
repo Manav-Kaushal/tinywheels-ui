@@ -2,13 +2,12 @@ import Button from "@components/Button";
 import Input from "@components/Forms/Input";
 import Select from "@components/Forms/Select";
 import Spinner from "@components/Spinner";
-import api from "@utils/api";
+// import api from "@src/services/api";
 import { RolesEnum } from "@utils/enums/Roles";
 import { UserType } from "@utils/types/User";
 import { Form, Formik } from "formik";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
 
 type Props = {
   token: string;
@@ -21,45 +20,45 @@ const EditUserForm = ({ token, userToEdit, callback }: Props) => {
     userToEdit
   );
 
-  const handleFormSubmit = async ({
-    values,
-    setSubmitting,
-  }: {
-    values: any;
-    setSubmitting: (isSubmitting: boolean) => void;
-  }) => {
-    setSubmitting(true);
+  // const handleFormSubmit = async ({
+  //   values,
+  //   setSubmitting,
+  // }: {
+  //   values: any;
+  //   setSubmitting: (isSubmitting: boolean) => void;
+  // }) => {
+  //   setSubmitting(true);
 
-    const { name, role, isActive } = values;
+  //   const { name, role, isActive } = values;
 
-    try {
-      const payload = {
-        name,
-        role,
-        isActive,
-      };
-      console.log(Boolean(isActive));
+  //   try {
+  //     const payload = {
+  //       name,
+  //       role,
+  //       isActive,
+  //     };
+  //     console.log(Boolean(isActive));
 
-      const res: any = await api.put("/auth/" + userToEdit?._id, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+  //     const res: any = await api.put("/auth/" + userToEdit?._id, payload, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-      if (res.ok) {
-        toast.success("User updated successfully!");
-        callback();
-      } else {
-        console.error({ res });
-        toast.error(res?.data?.message || "User not updated!");
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  //     if (res.ok) {
+  //       toast.success("User updated successfully!");
+  //       callback();
+  //     } else {
+  //       console.error({ res });
+  //       toast.error(res?.data?.message || "User not updated!");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
 
   return (
     <motion.div
@@ -70,7 +69,7 @@ const EditUserForm = ({ token, userToEdit, callback }: Props) => {
       <Formik
         initialValues={initialValues as UserType}
         onSubmit={(values, { setSubmitting }) => {
-          handleFormSubmit({ values, setSubmitting });
+          // handleFormSubmit({ values, setSubmitting });
         }}
         enableReinitialize
       >

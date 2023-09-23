@@ -119,14 +119,14 @@ const Input: React.FC<InputFieldProps> = ({
               className={inputClasses}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              maxLength={rest.maxLength || 500}
+              maxLength={rest.maxLength}
             />
             <label htmlFor={name} className={labelClasses}>
               {label}
             </label>
             {rest.maxLength && (
               <span className={charCountClasses}>
-                {field.value.length}/{rest.maxLength || 500}
+                {field.value.length}/{rest.maxLength}
               </span>
             )}
           </>

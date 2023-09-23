@@ -1,98 +1,53 @@
 import Button from "@components/Button";
 import FileUploader from "@components/Forms/FileUploader";
 import Input from "@components/Forms/Input";
-import Loader from "@components/Loader";
 import Spinner from "@components/Spinner";
-import api from "@utils/api";
-import { BrandType } from "@utils/types/Brand";
+import { api } from "@src/services/api";
+import { Brand } from "@utils/types/Brands";
 import { Form, Formik } from "formik";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 type Props = {
-  id: string;
-  token: string;
+  brandToEdit: Brand | null;
   callback: () => void;
 };
 
-const EditBrandForm = ({ id, token, callback }: Props) => {
-  const [fetchingBrandDetails, setFetchingBrandDetails] =
-    useState<boolean>(false);
-  const [initialValues, setInitialValues] = useState<BrandType | null>(null);
+const EditBrandForm = ({ brandToEdit, callback }: Props) => {
+  const [initialValues, setInitialValues] = useState<Brand | null>(null);
 
-  const handleFormSubmit = async ({
-    values,
-    setSubmitting,
-  }: {
-    values: any;
-    setSubmitting: (isSubmitting: boolean) => void;
-  }) => {
+  const handleFormSubmit = async (
+    values: Brand,
+    setSubmitting: (isSubmitting: boolean) => void
+  ) => {
     setSubmitting(true);
-
-    const { name, fullName, country, yearFounded, logo } = values;
-
     try {
+      const { name, fullName, country, yearFounded, logo } = values;
       const formData = new FormData();
-
       formData.append("name", name);
       formData.append("fullName", fullName);
       formData.append("country", country);
       formData.append("yearFounded", yearFounded);
       formData.append("logo", logo);
 
-      const res = await api.put("/brands/" + id, formData, {
-        headers: {
-          // Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (res.ok) {
+      const res = await api.editBrand(brandToEdit?._id as string, formData);
+      if (res.kind === "ok") {
         toast.success("Brand updated successfully!");
         callback();
       } else {
         toast.error("Brand not updated!");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error(error?.message);
     } finally {
       setSubmitting(false);
     }
   };
 
-  const fetchSingleBrandDetails = async () => {
-    if (id) {
-      try {
-        const res = await api.get(`/brands/${id}`);
-        const brand: BrandType = res.data as BrandType;
-        setInitialValues({
-          name: brand.name,
-          fullName: brand.fullName,
-          country: brand.country,
-          yearFounded: brand.yearFounded,
-          logo: brand.logo,
-        } as any);
-      } catch (error) {
-        console.error("Error fetching brand details:", error);
-        toast.error("An error occurred while fetching brand details.");
-      } finally {
-        setFetchingBrandDetails(false);
-      }
-    }
-  };
-
   useEffect(() => {
-    fetchSingleBrandDetails();
+    setInitialValues(brandToEdit);
   }, []);
-
-  if (fetchingBrandDetails) {
-    return (
-      <div className="flex items-center justify-center w-full min-h-[calc(100vh-140px)]">
-        <Loader />
-      </div>
-    );
-  }
 
   return (
     <motion.div
@@ -101,9 +56,9 @@ const EditBrandForm = ({ id, token, callback }: Props) => {
       transition={{ delay: 0.2, duration: 0.1, type: "spring", stiffness: 150 }}
     >
       <Formik
-        initialValues={initialValues as BrandType}
+        initialValues={initialValues as Brand}
         onSubmit={(values, { setSubmitting }) => {
-          handleFormSubmit({ values, setSubmitting });
+          handleFormSubmit(values, setSubmitting);
         }}
         enableReinitialize
       >
@@ -113,7 +68,7 @@ const EditBrandForm = ({ id, token, callback }: Props) => {
             <Input name="fullName" label="Full Name" />
             <div className="grid grid-cols-2 gap-4">
               <Input name="country" label="Country" />
-              <Input name="yearFounded" label="Year Founded" />
+              <Input name="yearFounded" label="Year Founded (MM-DD-YYYY)" />
             </div>
             <FileUploader
               name="logo"

@@ -3,13 +3,11 @@ import CopyToClipboard from "@components/CopyToClipboard";
 import Drawer from "@components/Drawer";
 import Table from "@components/Table";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import api from "@utils/api";
 import { trimID } from "@utils/helpers";
 import { UserType } from "@utils/types/User";
 import classNames from "classnames";
 import dayjs from "dayjs";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { toast } from "react-hot-toast";
+import { useEffect, useMemo, useState } from "react";
 import EditUserForm from "./EditUserForm";
 
 type Props = {
@@ -118,57 +116,55 @@ const UsersView = ({ user }: Props) => {
     []
   );
 
-  const fetchAllUsers = useCallback(() => {
-    setFetchingUsersList(true);
-    api
-      .get("/auth/all", undefined, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      })
-      .then((res: any) => {
-        if (res.ok) {
-          setUsersList(res.data);
-        } else {
-          toast.error("Failed to fetch!");
-        }
-      })
-      .catch((err) => {
-        toast.error("Something went wrong!");
-        console.log(err);
-      })
-      .finally(() => {
-        setFetchingUsersList(false);
-      });
-  }, []);
+  // const fetchAllUsers = useCallback(() => {
+  //   setFetchingUsersList(true);
+  //   api
+  //     .get("/auth/all", undefined, {
+  //       headers: {
+  //         Authorization: `Bearer ${user?.token}`,
+  //       },
+  //     })
+  //     .then((res: any) => {
+  //       if (res.ok) {
+  //         setUsersList(res.data);
+  //       } else {
+  //         toast.error("Failed to fetch!");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       toast.error("Something went wrong!");
+  //       console.log(err);
+  //     })
+  //     .finally(() => {
+  //       setFetchingUsersList(false);
+  //     });
+  // }, []);
 
-  const handleUserDelete = async (id: string) => {
-    setDeletingUser(true);
+  // const handleUserDelete = async (id: string) => {
+  //   setDeletingUser(true);
 
-    try {
-      const response: any = await api.delete("/users/" + id);
+  //   try {
+  //     const response: any = await api.delete("/users/" + id);
 
-      if (response.ok) {
-        toast.success("User deleted successfully!");
-        fetchAllUsers();
-      } else {
-        const errorMessage = response?.data?.message || "Something went wrong";
-        toast.error(`User could not be deleted! Error: ${errorMessage}`);
-        console.error("User deletion error:", errorMessage);
-      }
-    } catch (error) {
-      toast.error(
-        "An error occurred while deleting the user. Check console for more details."
-      );
-      console.error("Error deleting user:", error);
-    } finally {
-      setDeletingUser(false);
-    }
-  };
+  //     if (response.ok) {
+  //       toast.success("User deleted successfully!");
+  //       fetchAllUsers();
+  //     } else {
+  //       const errorMessage = response?.data?.message || "Something went wrong";
+  //       toast.error(`User could not be deleted! Error: ${errorMessage}`);
+  //       console.error("User deletion error:", errorMessage);
+  //     }
+  //   } catch (error) {
+  //     toast.error(
+  //       "An error occurred while deleting the user. Check console for more details."
+  //     );
+  //     console.error("Error deleting user:", error);
+  //   } finally {
+  //     setDeletingUser(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchAllUsers();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
@@ -179,7 +175,7 @@ const UsersView = ({ user }: Props) => {
           </h4>
         </div>
         <div className="flex items-center space-x-2">
-          <Button label="Refresh" onClick={() => fetchAllUsers()} size="sm" />
+          <Button label="Refresh" onClick={() => {}} size="sm" />
         </div>
       </div>
 
@@ -192,7 +188,7 @@ const UsersView = ({ user }: Props) => {
       </div>
 
       {/* Edit User */}
-      <Drawer
+      {/* <Drawer
         title="Edit User Details"
         open={editUserDrawer}
         size="lg"
@@ -213,10 +209,10 @@ const UsersView = ({ user }: Props) => {
                 setUserToEdit(null);
               }, 500);
             });
-            fetchAllUsers();
+            // fetchAllUsers();
           }}
         />
-      </Drawer>
+      </Drawer> */}
     </div>
   );
 };

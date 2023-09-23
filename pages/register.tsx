@@ -3,14 +3,10 @@ import Button from "@components/Button";
 import Checkbox from "@components/Forms/Checkbox";
 import Input from "@components/Forms/Input";
 import Spinner from "@components/Spinner";
-import api from "@utils/api";
-import { appConfig } from "@utils/config";
 import { Form, Formik } from "formik";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
 
 type Props = {};
 
@@ -21,61 +17,58 @@ type FormikValuesType = {
   termsAndConditions: boolean;
 };
 
-const Login = (props: Props) => {
+const Register = (props: Props) => {
   const router = useRouter();
   const [signingUp, setSigningUp] = useState(false);
 
-  const handleLogin = async (payload: FormikValuesType) => {
-    setSigningUp(true);
-    try {
-      const { name, email, password } = payload;
-      const body = {
-        name,
-        email,
-        password,
-      };
+  // const handleLogin = async (payload: FormikValuesType) => {
+  //   setSigningUp(true);
+  //   try {
+  //     const { name, email, password } = payload;
+  //     const body = {
+  //       name,
+  //       email,
+  //       password,
+  //     };
 
-      const signupResponse: any = await api.post("/auth/signup", body, {
-        headers: { "Content-Type": "application/json" },
-      });
-      console.log({ signupResponse });
+  //     const signupResponse: any = await api.post(body);
 
-      if (signupResponse.ok) {
-        toast.success(
-          "Congratulations! Your account has been successfully created."
-        );
+  //     if (signupResponse.ok) {
+  //       toast.success(
+  //         "Congratulations! Your account has been successfully created."
+  //       );
 
-        const loginResponse: any = await signIn("credentials", {
-          email,
-          password,
-          redirect: false,
-          callbackUrl: appConfig.websiteUrl,
-        });
+  //       const loginResponse: any = await signIn("credentials", {
+  //         email,
+  //         password,
+  //         redirect: false,
+  //         callbackUrl: appConfig.websiteUrl,
+  //       });
 
-        if (loginResponse.ok) {
-          toast.success("Login successful! Enjoy your experience.");
-          router.push("/");
-        } else {
-          const errorMessage =
-            loginResponse?.data?.message[0] ||
-            loginResponse?.message ||
-            "Something went wrong!";
-          toast.error(errorMessage);
-        }
-      } else {
-        const errorMessage =
-          signupResponse?.data?.message ||
-          signupResponse?.message ||
-          "Something went wrong!";
-        toast.error(errorMessage);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("An error occurred. Please try again later.");
-    } finally {
-      setSigningUp(false);
-    }
-  };
+  //       if (loginResponse.ok) {
+  //         toast.success("Login successful! Enjoy your experience.");
+  //         router.push("/");
+  //       } else {
+  //         const errorMessage =
+  //           loginResponse?.data?.message[0] ||
+  //           loginResponse?.message ||
+  //           "Something went wrong!";
+  //         toast.error(errorMessage);
+  //       }
+  //     } else {
+  //       const errorMessage =
+  //         signupResponse?.data?.message ||
+  //         signupResponse?.message ||
+  //         "Something went wrong!";
+  //       toast.error(errorMessage);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("An error occurred. Please try again later.");
+  //   } finally {
+  //     setSigningUp(false);
+  //   }
+  // };
 
   return (
     <>
@@ -109,7 +102,7 @@ const Login = (props: Props) => {
                 termsAndConditions: false,
               }}
               onSubmit={(values) => {
-                handleLogin(values);
+                // handleLogin(values);
               }}
             >
               {({ values }) => (
@@ -142,4 +135,4 @@ const Login = (props: Props) => {
   );
 };
 
-export default Login;
+export default Register;

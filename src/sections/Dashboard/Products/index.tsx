@@ -7,16 +7,17 @@ import {
   TrashIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
-import api from "@utils/api";
+import { api } from "@src/services/api";
 import { formatCurrency } from "@utils/helpers";
 import useQuery from "@utils/hooks/useQuery";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import AddProductForm from "./AddProductForm";
 
-type Props = { user: any };
+type Props = {};
 
-const ProductsView = ({ user }: Props) => {
+const ProductsView = (props: Props) => {
   const [query, updateQuery, removeQuery] = useQuery();
   const [fetchingProductsList, setFetchingProductsList] = useState(false);
   const [productsList, setProductsList] = useState<{
@@ -139,34 +140,43 @@ const ProductsView = ({ user }: Props) => {
     []
   );
 
-  const fetchAllProducts = useCallback(() => {
-    api
-      .get("/products?admin=true")
-      .then((res: any) => {
-        setProductsList((prev) => ({ ...prev, list: res.data }));
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        setFetchingProductsList(false);
-      });
+  const fetchProducts = useCallback(async () => {
+    setFetchingProductsList(true);
+    try {
+      const res = await api.getProducts();
+      if (res.kind === "ok") {
+        setProductsList(res?.data);
+      } else {
+        toast.error("Fetching products failed!");
+      }
+    } catch (error: any) {
+      console.error(error?.message);
+    } finally {
+      setFetchingProductsList(false);
+    }
   }, []);
 
   useEffect(() => {
-    setFetchingProductsList(true);
-    fetchAllProducts();
+    fetchProducts();
   }, []);
 
-  // Conditionally render components based on the query parameters
   const renderComponent = () => {
     if (query.newEntry) {
       return (
         <AddProductForm
-          token={user?.token}
-          fetchAllProducts={fetchAllProducts}
+          removeQuery={removeQuery}
+          fetchProducts={fetchProducts}
         />
       );
     } else {
-      return <Table columns={columns} data={productsList?.list || []} />;
+      return (
+        <Table
+          columns={columns}
+          data={productsList?.list || []}
+          loading={fetchingProductsList}
+          noDataMessage="No products found. Try refreshing or add a product."
+        />
+      );
     }
   };
 
@@ -190,7 +200,7 @@ const ProductsView = ({ user }: Props) => {
               <Button
                 label="Refresh"
                 onClick={() => {
-                  fetchAllProducts();
+                  fetchProducts();
                 }}
                 size="sm"
               />

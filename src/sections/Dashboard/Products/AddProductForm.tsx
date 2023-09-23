@@ -4,85 +4,39 @@ import Divider from "@components/Divider";
 import FileUploader from "@components/Forms/FileUploader";
 import Input from "@components/Forms/Input";
 import Select from "@components/Forms/Select";
+import Loader from "@components/Loader";
 import Switch from "@components/Switch";
+import { api } from "@src/services/api";
 import {
   ProductCategory,
   ProductCurrency,
   ProductScales,
 } from "@utils/enums/Product";
 import { convertObjectToFormData, slugifyProductName } from "@utils/helpers";
-import api from "@utils/api";
+import { Brand } from "@utils/types/Brands";
 import {
-  CreateProductTypes,
+  CreateProduct,
   ProductCategoryOption,
   ProductCurrencyOption,
   ProductScaleOption,
 } from "@utils/types/Products";
 import { Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type Props = {
-  token: string;
-  fetchAllProducts: () => void;
+  removeQuery: (param: string | number) => void;
+  fetchProducts: () => void;
 };
 
-const brandOptions = [
-  {
-    value: "64d6b8f8070005ab266b9620",
-    label: "BMW",
-  },
-  {
-    value: "64d6efa62375d104945dbe35",
-    label: "Audi",
-  },
-  {
-    value: "64d6f8f62375d104945dbe3c",
-    label: "Honda",
-  },
-  {
-    value: "64d6fcabee29d44731aa1a3e",
-    label: "Ford",
-  },
-  {
-    value: "64d7f53a7d708e3d111f9bb7",
-    label: "Volvo",
-  },
-];
+const AddProductForm = ({ removeQuery, fetchProducts }: Props) => {
+  const [brandOptions, setBrandOptions] = useState<
+    | {
+        value: string;
+        label: string;
+      }[]
+  >([]);
 
-const initialValues: CreateProductTypes = {
-  title: "",
-  slug: "",
-  description: "",
-  body: "",
-  category: ProductCategory.SEDAN,
-  brand: brandOptions[0].value,
-  sku: "",
-  scale: ProductScales.ONETOTWELVE,
-  material: "",
-  color: "",
-  additionalColors: "",
-  price: 0,
-  currency: ProductCurrency.INDIANRUPEE,
-  stockQuantity: 50,
-  images: [],
-  dimensions: {
-    length: 0,
-    width: 0,
-    height: 0,
-  },
-  weight: {
-    value: 0,
-    unit: "g",
-  },
-  tags: "",
-  isFeatured: false,
-  meta: {
-    title: "",
-    description: "",
-    keywords: "",
-  },
-};
-
-const AddProductForm = ({ token, fetchAllProducts }: Props) => {
   // Convert enum to category object
   const productCategoryOptions: ProductCategoryOption[] = Object.keys(
     ProductCategory
@@ -107,35 +61,96 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
     label: ProductCurrency[key as keyof typeof ProductCurrency],
   }));
 
-  const handleCreateProduct = async (values: CreateProductTypes) => {
-    const { images, ...rest }: any = values;
-
-    const formData = convertObjectToFormData(rest);
-
-    formData.append("images", images);
-
+  const handleCreateProduct = async (
+    values: CreateProduct,
+    setSubmitting: (isSubmitting: boolean) => void
+  ) => {
+    setSubmitting(true);
     try {
-      const response = await api.post("/products/new", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      if (response.ok) {
-        console.log({ response });
+      const { images, ...rest }: any = values;
+      const formData = convertObjectToFormData(rest);
+      formData.append("images", images);
+      const res = await api.createProduct(formData);
+      if (res.kind === "ok") {
+        toast.success("Product created!");
+        fetchProducts();
+        removeQuery("newEntry");
+      } else {
+        toast.error("Product not created!");
       }
-    } catch (error) {
-      console.log({ error });
+    } catch (error: any) {
+      console.error(error?.message);
+    } finally {
+      setSubmitting(false);
     }
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await api.getAllBrands();
+        if (res.kind === "ok") {
+          const brands = res?.data?.list;
+
+          setBrandOptions(
+            brands.map((brand: Brand) => ({
+              value: brand._id,
+              label: brand.name,
+            }))
+          );
+        } else {
+          throw new Error("Failed to fetch brands");
+        }
+      } catch (error: any) {
+        toast.error(error?.message);
+      }
+    })();
+  }, []);
+
+  const initialValues: CreateProduct = {
+    title: "",
+    slug: "",
+    description: "",
+    body: "",
+    category: ProductCategory.SEDAN,
+    brand: brandOptions[0]?.value,
+    sku: "",
+    scale: ProductScales.ONETOTWELVE,
+    material: "",
+    color: "",
+    additionalColors: "",
+    price: 0,
+    currency: ProductCurrency.INDIANRUPEE,
+    stockQuantity: 50,
+    images: [],
+    dimensions: {
+      length: 0,
+      width: 0,
+      height: 0,
+    },
+    weight: {
+      value: 0,
+      unit: "g",
+    },
+    tags: "",
+    isFeatured: false,
+    meta: {
+      title: "",
+      description: "",
+      keywords: "",
+    },
   };
 
   return (
     <div className="mt-6">
       <Formik
         initialValues={initialValues}
-        onSubmit={(values: CreateProductTypes) => {
-          handleCreateProduct(values);
+        onSubmit={(values: CreateProduct, { setSubmitting }) => {
+          handleCreateProduct(values, setSubmitting);
         }}
         enableReinitialize
       >
-        {({ values, setFieldValue, resetForm }) => (
+        {({ setFieldValue, resetForm, isSubmitting }) => (
           <Form className="space-y-2" autoComplete="off">
             <Accordion title="Product Details" defaultOpen>
               <div className="grid grid-cols-12 gap-6">
@@ -293,6 +308,7 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
                   name="images"
                   label="Upload Images"
                   containerClassname="col-span-12"
+                  multiple
                 />
               </div>
             </Accordion>
@@ -303,7 +319,7 @@ const AddProductForm = ({ token, fetchAllProducts }: Props) => {
                 variant="danger"
                 onClick={() => resetForm()}
               />
-              <Button label="Create Product" />
+              <Button label={isSubmitting ? <Loader /> : "Create Product"} />
             </div>
           </Form>
         )}

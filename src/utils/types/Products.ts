@@ -1,10 +1,11 @@
+import { GeneralApiProblem } from "@src/services/apiProblem";
 import {
   ProductCategory,
   ProductCurrency,
   ProductScales,
 } from "@utils/enums/Product";
 
-export type CreateProductTypes = {
+export type CreateProduct = {
   title: string;
   slug: string;
   description: string;
@@ -52,3 +53,22 @@ export type ProductCurrencyOption = {
   value: ProductCurrency;
   label: string;
 };
+
+export type FetchBrandsRes =
+  | GeneralApiProblem
+  | {
+      kind: "ok";
+      data: any;
+    };
+
+export type CreateProductRes =
+  | GeneralApiProblem
+  | {
+      kind: "ok";
+    };
+
+export type DeleteBrandsRes =
+  | GeneralApiProblem
+  | {
+      kind: "ok";
+    };

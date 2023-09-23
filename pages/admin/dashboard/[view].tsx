@@ -21,7 +21,7 @@ const Dashboard = ({ view, user }: Props) => {
       case DashboardRoutesEnums.BRANDS:
         return <BrandsView user={user} />;
       case DashboardRoutesEnums.PRODUCTS:
-        return <ProductsView user={user} />;
+        return <ProductsView />;
       default:
         return "Please select from left";
     }

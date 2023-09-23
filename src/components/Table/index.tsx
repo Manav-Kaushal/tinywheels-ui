@@ -6,9 +6,15 @@ interface TableProps {
   columns: any[];
   data: any[];
   loading?: boolean;
+  noDataMessage?: string;
 }
 
-const Table: React.FC<TableProps> = ({ columns, data, loading }) => {
+const Table: React.FC<TableProps> = ({
+  columns,
+  data,
+  loading,
+  noDataMessage,
+}) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
@@ -16,7 +22,7 @@ const Table: React.FC<TableProps> = ({ columns, data, loading }) => {
     });
 
   return (
-    <table {...getTableProps()}>
+    <table className="relative" {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -34,17 +40,28 @@ const Table: React.FC<TableProps> = ({ columns, data, loading }) => {
             <Loader />
           </div>
         )}
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
-              })}
-            </tr>
-          );
-        })}
+        {data?.length > 0 &&
+          rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
       </tbody>
+      {data?.length === 0 && (
+        <tbody
+          className="absolute w-full py-4 text-center text-neutral-500"
+          {...getTableBodyProps()}
+        >
+          {noDataMessage || "No Data Found"}
+        </tbody>
+      )}
     </table>
   );
 };
