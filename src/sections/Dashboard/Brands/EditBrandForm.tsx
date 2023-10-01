@@ -62,7 +62,7 @@ const EditBrandForm = ({ brandToEdit, callback }: Props) => {
         }}
         enableReinitialize
       >
-        {({ isSubmitting }) => (
+        {({ setFieldValue, isSubmitting }) => (
           <Form autoComplete="off" className="space-y-4">
             <Input name="name" label="Display Name" />
             <Input name="fullName" label="Full Name" />
@@ -74,7 +74,7 @@ const EditBrandForm = ({ brandToEdit, callback }: Props) => {
               name="logo"
               label="Update Logo"
               accept="image/*"
-              imgSrc={initialValues?.logo}
+              // imgSrc={initialValues?.logo}
             />
             <Button
               size="sm"

@@ -14,11 +14,7 @@ import { toast } from "react-hot-toast";
 import AddBrandForm from "./AddBrandForm";
 import EditBrandForm from "./EditBrandForm";
 
-type Props = {
-  user: any;
-};
-
-const BrandsView = ({ user }: Props) => {
+const BrandsView = () => {
   const [fetchingBrandsList, setFetchingBrandsList] = useState<boolean>(false);
   const [deletingBrand, setDeletingBrand] = useState<boolean>(false);
   const [brandsList, setBrandsList] = useState({

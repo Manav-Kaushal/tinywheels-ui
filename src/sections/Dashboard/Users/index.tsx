@@ -1,6 +1,5 @@
 import Button from "@components/Button";
 import CopyToClipboard from "@components/CopyToClipboard";
-import Drawer from "@components/Drawer";
 import Table from "@components/Table";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { trimID } from "@utils/helpers";
@@ -8,13 +7,8 @@ import { UserType } from "@utils/types/User";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
-import EditUserForm from "./EditUserForm";
 
-type Props = {
-  user: any;
-};
-
-const UsersView = ({ user }: Props) => {
+const UsersView = () => {
   const [fetchingUsersList, setFetchingUsersList] = useState<boolean>(false);
   const [deletingUser, setDeletingUser] = useState<boolean>(false);
   const [usersList, setUsersList] = useState<{

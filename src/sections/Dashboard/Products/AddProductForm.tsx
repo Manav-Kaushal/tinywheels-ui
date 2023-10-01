@@ -67,16 +67,21 @@ const AddProductForm = ({ removeQuery, fetchProducts }: Props) => {
   ) => {
     setSubmitting(true);
     try {
-      const { images, ...rest }: any = values;
+      const { images, ...rest } = values;
       const formData = convertObjectToFormData(rest);
-      formData.append("images", images);
+      // Map over the images array to send in formData
+      images.map((image: any) => formData.append("images", image));
       const res = await api.createProduct(formData);
       if (res.kind === "ok") {
         toast.success("Product created!");
         fetchProducts();
         removeQuery("newEntry");
       } else {
-        toast.error("Product not created!");
+        toast.error(
+          Array.isArray(res?.message)
+            ? res?.message[0]
+            : res?.message || "Product not created!"
+        );
       }
     } catch (error: any) {
       console.error(error?.message);
@@ -150,7 +155,7 @@ const AddProductForm = ({ removeQuery, fetchProducts }: Props) => {
         }}
         enableReinitialize
       >
-        {({ setFieldValue, resetForm, isSubmitting }) => (
+        {({ values, setFieldValue, resetForm, isSubmitting }) => (
           <Form className="space-y-2" autoComplete="off">
             <Accordion title="Product Details" defaultOpen>
               <div className="grid grid-cols-12 gap-6">
@@ -303,16 +308,18 @@ const AddProductForm = ({ removeQuery, fetchProducts }: Props) => {
             </Accordion>
 
             <Accordion title="Images">
-              <div className="grid grid-cols-12 gap-6">
+              <div className="">
                 <FileUploader
                   name="images"
-                  label="Upload Images"
-                  containerClassname="col-span-12"
+                  label="Select Images"
+                  accept="images/*"
+                  // onChange={(d) => {
+                  //   setFieldValue("images", d);
+                  // }}
                   multiple
                 />
               </div>
             </Accordion>
-
             <div className="flex items-center justify-end space-x-2">
               <Button
                 label="Reset"

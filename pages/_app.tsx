@@ -32,7 +32,7 @@ function App({
       </Head>
       <Toaster />
       <NextSeo {...defaultSEO} />
-      <NextNProgress color="#0099cc" />
+      <NextNProgress color="#0099cc" options={{ showSpinner: false }} />
       <SessionProvider session={session}>
         {/* enableSystem is false,  default theme is light */}
         <ThemeProvider enableSystem={false}>

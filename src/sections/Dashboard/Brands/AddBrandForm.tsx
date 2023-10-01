@@ -65,7 +65,7 @@ const AddBrandForm = ({ toggle, fetchBrands }: Props) => {
           handleFormSubmit(values as InitialValues, setSubmitting);
         }}
       >
-        {({ isSubmitting }) => (
+        {({ setFieldValue, isSubmitting }) => (
           <Form autoComplete="off" className="space-y-4">
             <Input name="name" label="Display Name" required />
             <Input name="fullName" label="Full Name" />

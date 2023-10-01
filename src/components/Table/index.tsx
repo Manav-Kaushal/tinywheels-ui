@@ -54,7 +54,7 @@ const Table: React.FC<TableProps> = ({
             );
           })}
       </tbody>
-      {data?.length === 0 && (
+      {data?.length === 0 && !loading && (
         <tbody
           className="absolute w-full py-4 text-center text-neutral-500"
           {...getTableBodyProps()}

@@ -17,9 +17,9 @@ const Dashboard = ({ view, user }: Props) => {
       case DashboardRoutesEnums.OVERVIEW:
         return "Overview";
       case DashboardRoutesEnums.USERS:
-        return <UsersView user={user} />;
+        return <UsersView />;
       case DashboardRoutesEnums.BRANDS:
-        return <BrandsView user={user} />;
+        return <BrandsView />;
       case DashboardRoutesEnums.PRODUCTS:
         return <ProductsView />;
       default:
