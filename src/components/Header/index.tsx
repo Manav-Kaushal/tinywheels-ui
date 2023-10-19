@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
             </div>
           </Link>
           <div className="flex-1">
-            <Link href="/shop" className="header-link">
+            <Link href="/shop" className="link underline-animation">
               Shop
             </Link>
           </div>

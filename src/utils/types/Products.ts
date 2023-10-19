@@ -5,11 +5,18 @@ import {
   ProductScales,
 } from "@utils/enums/Product";
 
-export type CreateProduct = {
+interface MongoDocument {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Product extends MongoDocument {
   title: string;
   slug: string;
   description: string;
   body: string;
+  thumbnail: string;
   category: ProductCategory;
   brand: string;
   sku: string;
@@ -20,7 +27,7 @@ export type CreateProduct = {
   price: number;
   currency: ProductCurrency;
   stockQuantity: number;
-  images: File[];
+  images: string[];
   dimensions: {
     length: number;
     width: number;
@@ -37,7 +44,7 @@ export type CreateProduct = {
     description: string;
     keywords: string;
   };
-};
+}
 
 export type ProductCategoryOption = {
   value: ProductCategory;

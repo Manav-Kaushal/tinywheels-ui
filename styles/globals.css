@@ -8,6 +8,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --blue-primary: #0099cc;
 }
 
 /* * {
@@ -65,6 +66,44 @@ table tr:hover {
   background-color: #f2f2f2;
 }
 
-.header-link {
-  @apply text-sm;
+/* Underline animation */
+.underline-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.underline-animation:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--blue-primary);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.underline-animation:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+/* Underline animation end */
+
+.product-body h1,
+.product-body h2,
+.product-body h3,
+.product-body h4,
+.product-body h5,
+.product-body h6 {
+  marging: 16px 0 !important;
+  font-weight: bold;
+}
+.product-body ul {
+  list-style-type: disc;
+  padding-top: 8px;
+}
+.product-body ul li {
+  margin-left: 16px;
 }

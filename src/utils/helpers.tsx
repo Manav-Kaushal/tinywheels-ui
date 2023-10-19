@@ -73,3 +73,7 @@ export const convertObjectToFormData = (data: any): FormData => {
   buildFormData(formData, data);
   return formData;
 };
+
+export const getPdpUrl = (slug: string) => {
+  return "/product-view/" + slug;
+};

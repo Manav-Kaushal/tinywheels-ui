@@ -1,5 +1,5 @@
 import { appConfig } from "@utils/config";
-import { getLoginUrl, productsEndpoints } from "@utils/endPoints";
+import { getLoginUrl, getProductEndpoints } from "@utils/endPoints";
 import {
   CreateBrandRes,
   DeleteBrandsRes,
@@ -94,14 +94,23 @@ export class Api {
   // BRANDS END
 
   // PRODUCTS START
-  async getProducts(): Promise<any> {
-    const res = await this.apisauce.get(productsEndpoints.getAll);
+  async getProducts(admin?: boolean): Promise<any> {
+    const res = await this.apisauce.get(getProductEndpoints({ admin }));
     if (!res.ok) {
       const problem = getGeneralApiProblem(res);
       if (problem) return problem;
     }
 
     return { kind: "ok", data: res?.data || [] };
+  }
+  async getProductBySlug(slug: string): Promise<any> {
+    const res = await this.apisauce.get(getProductEndpoints({ slug }));
+    if (!res.ok) {
+      const problem = getGeneralApiProblem(res);
+      if (problem) return problem;
+    }
+
+    return { kind: "ok", data: res?.data || {} };
   }
 
   async createProduct(data: FormData): Promise<CreateProductRes> {
@@ -118,6 +127,7 @@ export class Api {
 
     return { kind: "ok" };
   }
+
   // PRODUCTS END
 }
 

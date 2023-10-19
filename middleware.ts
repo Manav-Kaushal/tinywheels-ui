@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
   });
 
   const pathname = request.nextUrl.pathname;
-
+  console.log({ pathname });
   if (token) {
     if (pathname.includes("/admin")) {
       return res;

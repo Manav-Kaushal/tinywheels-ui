@@ -27,7 +27,7 @@ const ProductsView = (props: Props) => {
     list: [],
     total: 0,
   });
-
+  console.log({ productsList });
   const columns: any = useMemo(
     () => [
       {
@@ -35,7 +35,7 @@ const ProductsView = (props: Props) => {
         accessor: (row: any) => {
           return (
             <Image
-              src={row.images[0]}
+              src={row.thumbnail || ""}
               alt={row.title}
               width={75}
               height={75}
@@ -144,6 +144,7 @@ const ProductsView = (props: Props) => {
     setFetchingProductsList(true);
     try {
       const res = await api.getProducts();
+
       if (res.kind === "ok") {
         setProductsList(res?.data);
       } else {
